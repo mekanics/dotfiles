@@ -4,6 +4,9 @@
 # Install Cask
 install brew-cask
 
+# AntiVirus
+cask install sophos-anti-virus-home-edition
+
 # Quicklook plugins
 cask install qlcolorcode
 cask install qlmarkdown
