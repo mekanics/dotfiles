@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install dotfiles
-# Shamelessly copied from github.com/pstadler/
+# Shamelessly copied from github.com/swissmanu/, which is shamelessly copied from github.com/pstadler/
 for symlink in gitconfig gitignore_global slate zshrc
 do
 	rm ~/.$symlink
