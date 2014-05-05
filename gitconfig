@@ -1,0 +1,17 @@
+[user]
+	name = Alexandre Joly
+	email = alexandre.joly@mekanics.ch
+[mergetool]
+	keepBackup = true
+[core]
+	editor = subl --wait --new-window
+	excludesfile = /.gitignore_global
+	autocrlf = input
+[color]
+	ui = true
+[push]
+	default = matching
+[alias]
+	st = status -sb
+[pull]
+	rebase = true

@@ -1,0 +1,40 @@
+# This is a Brewfile for phinze/homebrew-cask
+# Run `brew bundle Caskfile`
+
+# Install Cask
+install brew-cask
+
+# Quicklook plugins
+cask install qlcolorcode
+cask install qlmarkdown
+cask install quicklook-json
+cask install qlstephen
+cask install qlimagesize
+
+# dev tools
+cask install heroku-toolbelt
+cask install sublime-text-3
+cask install vagrant
+cask install virtualbox
+
+# Apps
+cask install alfred
+cask install betterzip
+cask install betterzipql
+cask install onepassword
+cask install spotify
+cask install slate
+cask install sequel-pro
+cask install retinizer
+cask install skype
+cask install gpgtools
+cask install dropbox
+cask install mou
+
+# brew cask install browsers
+cask install firefox
+cask install google-chrome
+cask install opera-next
+
+# link alfred
+cask alfred link

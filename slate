@@ -1,0 +1,74 @@
+#
+# Slate configuration
+# https://github.com/jigish/slate
+#
+
+# Settings:
+config defaultToCurrentScreen true
+
+# Monitors:
+alias mon-mbp	1440x900
+alias mon-ext	1920x1080
+
+# Aliases for shorter move commands:
+alias	x				screenOriginX
+alias	y				screenOriginY
+alias	w				screenSizeX
+alias	h				screenSizeY
+alias	centerMargin	0.06
+alias	hintKeys		QWERTZUIOP
+
+# Positions for current screen:
+alias	full			move	${x};${y}				${w};${h}
+alias	left			move	${x};${y}				${w}/2;${h}
+alias	left-1/3		move	${x};${y}				${w}/3;${h}
+alias	left-2/3		move	${x};${y}				(${w}/3)*2;${h}
+alias	right			move	${x}+${w}/2;${y}		${w}/2;${h}
+alias	right-1/3		move	${x}+(${w}/3)*2;${y}	${w}/3;${h}
+alias	right-2/3		move	${x}+(${w}/3)*1;${y}	(${w}/3)*2;${h}
+alias 	middle-1/3		move	${x}+(${w}/3);${y}		(${w}/3);${h}
+alias  	middle-2/3 		move	${x}+(${w}/6);${y}	(${w}/3)*2;${h}
+alias	top				move	${x};${y}				${w};${h}/2
+alias	bottom			move	${x};${y}+${h}/2		${w};${h}/2
+alias	center			move	${w}*${centerMargin};${h}*${centerMargin}	${w}*(1-2*${centerMargin});${h}*(1-2*${centerMargin})
+
+# Positions for MacBook:
+alias	mbp-full		move	${x};${y}			${w};${h}		${mon-mbp}
+alias	mbp-left		move	${x};${y}			${w}/2;${h}		${mon-mbp}
+alias	mbp-right		move	${x}+${w}/2;${y}	${w}/2;${h}		${mon-mbp}
+alias	mbp-top			move	${x};${y}			${w};${h}/2		${mon-mbp}
+alias	mbp-bottom		move	${x};${y}+${h}/2	${w};${h}/2		${mon-mbp}
+
+# Positions for external screen:
+alias	ext-full		move	${x};${y}			${w};${h}		${mon-ext}
+alias	ext-left		move	${x};${y}			${w}/2;${h}		${mon-ext}
+alias	ext-right		move	${x}+${w}/2;${y}	${w}/2;${h}		${mon-ext}
+alias	ext-top			move	${x};${y}			${w};${h}/2		${mon-ext}
+alias	ext-bottom		move	${x};${y}+${h}/2	${w};${h}/2		${mon-ext}
+
+
+
+# Layouts:
+default 1monitor	resolutions:${mon-mbp}
+default 2monitor	resolutions:${mon-mbp};${mon-ext}
+
+layout 1monitor		'Mail'				${mbp-full}
+layout 1monitor		'Sublime Text'		${mbp-full}
+layout 1monitor		'Terminal'			${mbp-right}
+layout 1monitor		'Screen Sharing'	${mbp-full}
+
+layout 2monitor		'Mail'				${mbp-full}
+layout 2monitor		'Sublime Text'		${mbp-full}
+layout 2monitor		'Terminal'			${ext-left}
+layout 2monitor		'Screen Sharing'	${ext-full}
+layout 2monitor		'Reminders'			${ext-right}
+
+
+# Bind to Keys:
+bind m:alt;cmd;ctrl			chain	${full} | ${center}
+bind left:alt;cmd;ctrl 		chain	${left} | ${left-1/3} | ${left-2/3}
+bind right:alt;cmd;ctrl 	chain	${right} | ${right-1/3} | ${right-2/3}
+bind n:alt;cmd;ctrl	chain	${middle-1/3} | ${middle-2/3}
+bind up:alt;cmd;ctrl 		${top}
+bind down:alt;cmd;ctrl 		${bottom}
+bind delete:ctrl;alt;cmd 	hint ${hintKeys}
