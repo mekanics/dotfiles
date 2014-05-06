@@ -27,7 +27,7 @@ cask install betterzip
 cask install betterzipql
 cask install onepassword
 cask install spotify
-cask install slate
+# cask install slate
 cask install sequel-pro
 cask install retinizer
 cask install skype
