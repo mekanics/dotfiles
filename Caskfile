@@ -17,7 +17,7 @@ cask install qlimagesize
 
 # dev tools
 cask install heroku-toolbelt
-cask install sublime-text-3
+cask install sublime-text-3-beta
 cask install vagrant
 cask install virtualbox
 
