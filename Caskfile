@@ -2,6 +2,7 @@
 # Run `brew bundle Caskfile`
 
 # Install Cask
+tap caskroom/cask
 install brew-cask
 
 # AntiVirus
