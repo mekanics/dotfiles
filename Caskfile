@@ -4,6 +4,7 @@
 # Install Cask
 tap caskroom/cask
 install brew-cask
+tap caskroom/versions
 
 # AntiVirus
 cask install sophos-anti-virus-home-edition
@@ -17,7 +18,7 @@ cask install qlimagesize
 
 # dev tools
 cask install heroku-toolbelt
-cask install sublime-text-3-beta
+cask install sublime-text3
 cask install vagrant
 cask install virtualbox
 
