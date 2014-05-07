@@ -6,9 +6,6 @@ read nothing
 echo "Open and accept the terms"
 xcode-select --install
 
-open ./Terminal/Optometrist.terminal
-
-
 # install homebrew
 echo "installing homebrew"
 ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
@@ -52,3 +49,6 @@ brew bundle Caskfile
 echo "Install dotfiles"
 ./install.sh
 source ~/.zshrc
+
+# config osx
+./osx.sh
