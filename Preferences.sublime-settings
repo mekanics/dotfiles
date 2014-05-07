@@ -3,6 +3,8 @@
 	"font_size": 12,
 	"default_encoding": "UTF-8",
 	"show_encoding": true,
+	"default_line_ending": "unix",
+	"show_line_endings": true,
 	"ignored_packages":
 	[
 		"Vintage"
