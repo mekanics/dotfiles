@@ -1,6 +1,8 @@
 {
 	"color_scheme": "Packages/Color Scheme - Default/Monokai.tmTheme",
 	"font_size": 12,
+	"default_encoding": "UTF-8",
+	"show_encoding": true,
 	"ignored_packages":
 	[
 		"Vintage"
