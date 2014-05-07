@@ -5,6 +5,21 @@
 	[
 		"Vintage"
 	],
+	"file_exclude_patterns":
+	[
+		".DS_Store",
+		"Desktop.ini",
+		"*.pyc",
+		"._*",
+		"Thumbs.db",
+		".Spotlight-V100",
+		".Trashes"
+	],
+	"folder_exclude_patterns":
+	[
+		".git",
+		"node_modules"
+	],
 	"phoenix_color_expanded_folder": true,
 	"phoenix_color_green": true,
 	"phoenix_highlight_current_tab": true,
