@@ -5,7 +5,7 @@
 	keepBackup = true
 [core]
 	editor = subl --wait --new-window
-	excludesfile = /.gitignore_global
+	excludesfile = ~/.gitignore_global
 	autocrlf = input
 [color]
 	ui = true
