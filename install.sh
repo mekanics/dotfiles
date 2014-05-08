@@ -19,6 +19,11 @@ echo "installing oh-my-zsh"
 wget --no-check-certificate http://install.ohmyz.sh -O - | sh
 source ~/.zshrc
 
+cd ~/.oh-my-zsh/custom/plugins
+git clone git://github.com/zsh-users/zsh-syntax-highlighting.git
+
+cd -1
+
 # ruby
 echo "updating ruby"
 rbenv install 2.0.0-p451
