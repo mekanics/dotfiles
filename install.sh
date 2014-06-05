@@ -52,8 +52,8 @@ brew bundle Caskfile
 
 # install dotfiles
 echo "Install dotfiles"
-./install.sh
+./make_symlink.sh
 source ~/.zshrc
 
 # config osx
-./osx.sh
+./config_osx.sh
