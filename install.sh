@@ -26,13 +26,18 @@ cd -1
 
 # ruby
 echo "updating ruby"
-rbenv install 2.0.0-p451
-rbenv install 2.1.2
+rbenv install 2.1.4
 rbenv rehash
+
+# install dotfiles
+echo "Install dotfiles"
+./make_symlink.sh
+source ~/.zshrc
+
 # Try out a ruby.
-rbenv shell 2.1.2
+rbenv shell 2.1.4
 # Enable a newly installed ruby, persistently, globally.
-rbenv global 2.1.2
+rbenv global 2.1.4
 rbenv rehash
 
 gem install bundler
@@ -49,11 +54,6 @@ gem install git-up
 # Caskfile
 echo "execute the Caskfile"
 brew bundle Caskfile
-
-# install dotfiles
-echo "Install dotfiles"
-./make_symlink.sh
-source ~/.zshrc
 
 # config osx
 ./config_osx.sh
