@@ -14,7 +14,7 @@ Thumbs.db
 
 # XCode              #
 ######################
-build/*
+build/
 
 *~.nib
 *.swp
@@ -27,9 +27,18 @@ build/*
 *.pbxuser
 xcuserdata
 
-DerivedData/
-Pods/
+DerivedData
 
+*.pbxuser
+!default.pbxuser
+!default.mode1v3
+!default.mode2v3
+!default.perspectivev3
+*.xccheckout
+*.moved-aside
+*.hmap
+*.ipa
+*.xcuserstate
 
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
