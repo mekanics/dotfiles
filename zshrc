@@ -1,4 +1,4 @@
-# Path to your oh-my-zsh installation.
+ # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load.
@@ -48,7 +48,7 @@ HIST_STAMPS="dd.mm.yyyy"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-flow svn osx ruby rails rake brew gem rvm heroku pod capistrano zsh-syntax-highlighting)
+plugins=(git git-flow svn osx ruby rails rake brew gem rvm heroku pod capistrano zsh-syntax-highlighting npm node bower heroku)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -79,3 +79,6 @@ fi
 # rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
