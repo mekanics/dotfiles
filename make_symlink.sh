@@ -13,3 +13,6 @@ done
 # ln -s "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" /usr/local/bin/subl
 rm ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings
 ln -s $PWD/Preferences.sublime-settings ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings
+
+rm ~/.oh-my-zsh/themes/alex.zsh-theme
+ln -s $PWD/themes/alex.zsh-theme ~/.oh-my-zsh/themes/alex.zsh-theme
