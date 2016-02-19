@@ -48,7 +48,7 @@ HIST_STAMPS="dd.mm.yyyy"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-flow svn osx ruby rails rake brew gem rvm heroku pod capistrano zsh-syntax-highlighting npm node bower heroku)
+plugins=(git git-flow svn osx ruby rails rake brew gem rvm heroku pod capistrano zsh-syntax-highlighting npm node bower heroku boot2docker docker docker-compose)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -82,3 +82,9 @@ eval "$(rbenv init -)"
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+
+### AWS API
+source /usr/local/share/zsh/site-functions/_aws
+
+### FIX El Capitan rights
+alias fixElCapitan="sudo chown -R $(whoami):admin /usr/local"
