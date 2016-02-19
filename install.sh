@@ -32,6 +32,9 @@ rbenv rehash
 # install dotfiles
 echo "Install dotfiles"
 ./make_symlink.sh
+
+echo "export DEFAULT_USER='alexandrejoly'" >> ~/.zshrc_local
+
 source ~/.zshrc
 
 # Try out a ruby.
