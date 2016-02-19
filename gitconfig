@@ -1,6 +1,6 @@
 [user]
 	name = Alexandre Joly
-	email = alexandre.joly@mekanics.ch
+	email = alexandre.joly@kilokilo.ch
 [mergetool]
 	keepBackup = true
 [core]
@@ -15,3 +15,5 @@
 	st = status -sb
 [pull]
 	rebase = true
+[credential]
+	helper = osxkeychain
