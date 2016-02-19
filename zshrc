@@ -84,9 +84,6 @@ eval "$(rbenv init -)"
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
-### AWS API
-source /usr/local/share/zsh/site-functions/_aws
-
 ### FIX El Capitan rights
 alias fixElCapitan="sudo chown -R $(whoami):admin /usr/local"
 
