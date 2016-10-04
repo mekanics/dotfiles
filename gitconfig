@@ -1,6 +1,7 @@
 [user]
 	name = Alexandre Joly
 	email = alexandre.joly@kilokilo.ch
+	signingkey = DF814BD0
 [mergetool]
 	keepBackup = true
 [core]
@@ -17,3 +18,5 @@
 	rebase = true
 [credential]
 	helper = osxkeychain
+[commit]
+	gpgsign = true
