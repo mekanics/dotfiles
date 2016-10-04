@@ -13,7 +13,7 @@ brew 'gcovr'
 brew 'htop-osx'
 brew 'httperf'
 brew 'nmap'
-brew 'imagemagick'
+brew 'imagemagick', args ['with-webp']
 brew 'jq'
 brew 'swiftlint'
 
