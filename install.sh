@@ -1,5 +1,7 @@
 #!/bin/bash
 
+$RUBY_VERSION='2.3.1'
+
 # install xcode first
 echo "Install Xcode first: https://itunes.apple.com/ch/app/xcode/id497799835?l=en&mt=12"
 read nothing
@@ -12,11 +14,12 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 # brewfile
 echo "brewfile"
+brew tap Homebrew/bundle
 brew bundle Brewfile
 
 # oh-my-zsh
 echo "installing oh-my-zsh"
-wget --no-check-certificate http://install.ohmyz.sh -O - | sh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 source ~/.zshrc
 
 cd ~/.oh-my-zsh/custom/plugins
@@ -26,8 +29,10 @@ cd -1
 
 # ruby
 echo "updating ruby"
-rbenv install 2.1.4
+rbenv install $RUBY_VERSION
 rbenv rehash
+
+# python
 
 # install dotfiles
 echo "Install dotfiles"
@@ -38,9 +43,9 @@ echo "export DEFAULT_USER='alexandrejoly'" >> ~/.zshrc_local
 source ~/.zshrc
 
 # Try out a ruby.
-rbenv shell 2.1.4
+rbenv shell $RUBY_VERSION
 # Enable a newly installed ruby, persistently, globally.
-rbenv global 2.1.4
+rbenv global $RUBY_VERSION
 rbenv rehash
 
 gem install bundler
@@ -50,9 +55,6 @@ bundle install --path vendor
 # cocoapods
 echo "installing cocoapods"
 gem install cocoapods
-
-#
-gem install git-up
 
 # Caskfile
 echo "execute the Caskfile"
