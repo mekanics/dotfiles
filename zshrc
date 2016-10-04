@@ -74,9 +74,6 @@ fi
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
-# NVM Additions
-[[ -s /Users/alexandrejoly/.nvm/nvm.sh ]] && . /.nvm/nvm.sh
-
 # rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
