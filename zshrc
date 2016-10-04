@@ -49,7 +49,7 @@ HIST_STAMPS="dd.mm.yyyy"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-flow svn osx ruby rails rake brew gem rvm heroku pod capistrano zsh-syntax-highlighting npm node bower heroku boot2docker docker docker-compose)
+plugins=(git git-flow svn osx ruby rails rake brew gem rvm heroku pod capistrano zsh-syntax-highlighting npm node bower heroku boot2docker docker docker-compose bundler)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -77,6 +77,11 @@ fi
 # rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
+
+# python virtualenv
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Devel
+source /usr/local/bin/virtualenvwrapper.sh
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"

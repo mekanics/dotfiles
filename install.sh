@@ -24,15 +24,7 @@ source ~/.zshrc
 
 cd ~/.oh-my-zsh/custom/plugins
 git clone git://github.com/zsh-users/zsh-syntax-highlighting.git
-
 cd -1
-
-# ruby
-echo "updating ruby"
-rbenv install $RUBY_VERSION
-rbenv rehash
-
-# python
 
 # install dotfiles
 echo "Install dotfiles"
@@ -42,23 +34,27 @@ echo "export DEFAULT_USER='alexandrejoly'" >> ~/.zshrc_local
 
 source ~/.zshrc
 
-# Try out a ruby.
+# Setup Ruby
+echo "updating ruby"
+rbenv install $RUBY_VERSION
 rbenv shell $RUBY_VERSION
-# Enable a newly installed ruby, persistently, globally.
 rbenv global $RUBY_VERSION
 rbenv rehash
+ruby -v
+
+source ~/.zshrc
 
 gem install bundler
 rbenv rehash
 bundle install --path vendor
 
+# Setup Python
+pip install virtualenv
+pip install virtualenvwrapper
+
 # cocoapods
 echo "installing cocoapods"
 gem install cocoapods
-
-# Caskfile
-echo "execute the Caskfile"
-brew bundle Caskfile
 
 # config osx
 ./config_osx.sh
