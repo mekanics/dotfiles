@@ -87,6 +87,35 @@ export PATH="/usr/local/heroku/bin:$PATH"
 ### FIX El Capitan rights
 alias fixElCapitan="sudo chown -R $(whoami):admin /usr/local"
 
+### open Xcode shortcut
+openx() {
+    fileToOpen='';
+    find . -maxdepth 1 -name *.xcworkspace -print0 | while IFS= read -r -d '' file; do
+        fileToOpen=$file
+    done
+
+    if [ -n "$fileToOpen" ]
+    then
+        echo "opening $fileToOpen"
+        open $fileToOpen
+    else
+        find . -maxdepth 1 -name *.xcodeproj -print0 | while IFS= read -r -d '' file; do
+            fileToOpen=$file
+        done
+
+        if [ -n "$fileToOpen" ]
+        then
+            echo "opening $fileToOpen"
+            open $fileToOpen
+        else
+            echo "No xcode files to open."
+        fi
+    fi
+}
+
+# Shorthand version of "openx", use "ox" instead.
+alias ox=openx
+
 # My own additions:
 if [ -f ~/.zshrc_local ]; then
 	source ~/.zshrc_local
