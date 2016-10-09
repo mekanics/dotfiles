@@ -1,7 +1,7 @@
 [user]
 	name = Alexandre Joly
 	email = alexandre.joly@kilokilo.ch
-	signingkey = DF814BD0
+	signingkey = 54F09A63
 [mergetool]
 	keepBackup = true
 [core]

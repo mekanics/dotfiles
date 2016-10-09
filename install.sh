@@ -15,7 +15,7 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 # brewfile
 echo "brewfile"
 brew tap Homebrew/bundle
-brew bundle Brewfile
+brew bundle
 
 # oh-my-zsh
 echo "installing oh-my-zsh"

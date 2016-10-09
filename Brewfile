@@ -13,7 +13,7 @@ brew 'gcovr'
 brew 'htop-osx'
 brew 'httperf'
 brew 'nmap'
-brew 'imagemagick', args ['with-webp']
+brew 'imagemagick', args: ['with-webp']
 brew 'jq'
 brew 'swiftlint'
 
@@ -38,7 +38,7 @@ cask 'sublime-text'
 
 cask 'alfred'
 cask 'appcleaner'
-cask 'onepassword'
+cask '1password'
 
 cask 'betterzip'
 cask 'betterzipql'
