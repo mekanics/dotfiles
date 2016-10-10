@@ -32,6 +32,9 @@ echo "Install dotfiles"
 
 echo "export DEFAULT_USER='alexandrejoly'" >> ~/.zshrc_local
 
+# install auto suggestions
+git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+
 source ~/.zshrc
 
 # Setup Ruby
