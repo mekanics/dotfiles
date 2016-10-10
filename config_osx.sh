@@ -31,6 +31,9 @@ sudo pmset -a standbydelay 86400
 # Disable transparency in the menu bar and elsewhere on Yosemite
 # defaults write com.apple.universalaccess reduceTransparency -bool true
 
+# Activate the dark menu bar and Dock
+defaults write .GlobalPreferences AppleInterfaceStyle -string "Dark"
+
 # Menu bar: hide the Time Machine, Volume, and User icons
 # for domain in ~/Library/Preferences/ByHost/com.apple.systemuiserver.*; do
 # 	defaults write "${domain}" dontAutoLoad -array \
