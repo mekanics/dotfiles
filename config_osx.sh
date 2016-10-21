@@ -34,18 +34,19 @@ sudo pmset -a standbydelay 86400
 # Activate the dark menu bar and Dock
 defaults write .GlobalPreferences AppleInterfaceStyle -string "Dark"
 
-# Menu bar: hide the Time Machine, Volume, and User icons
-# for domain in ~/Library/Preferences/ByHost/com.apple.systemuiserver.*; do
-# 	defaults write "${domain}" dontAutoLoad -array \
-# 		"/System/Library/CoreServices/Menu Extras/TimeMachine.menu" \
-# 		"/System/Library/CoreServices/Menu Extras/Volume.menu" \
-# 		"/System/Library/CoreServices/Menu Extras/User.menu"
-# done
-# defaults write com.apple.systemuiserver menuExtras -array \
-# 	"/System/Library/CoreServices/Menu Extras/Bluetooth.menu" \
-# 	"/System/Library/CoreServices/Menu Extras/AirPort.menu" \
-# 	"/System/Library/CoreServices/Menu Extras/Battery.menu" \
-# 	"/System/Library/CoreServices/Menu Extras/Clock.menu"
+Menu bar: hide the User icons
+for domain in ~/Library/Preferences/ByHost/com.apple.systemuiserver.*; do
+	defaults write "${domain}" dontAutoLoad -array \
+		"/System/Library/CoreServices/Menu Extras/User.menu"
+done
+defaults write com.apple.systemuiserver menuExtras -array
+    "/System/Library/CoreServices/Menu Extras/Clock.menu" \
+    "/System/Library/CoreServices/Menu Extras/Battery.menu" \
+    "/System/Library/CoreServices/Menu Extras/AirPort.menu" \
+    "/System/Library/CoreServices/Menu Extras/Displays.menu" \
+    "/System/Library/CoreServices/Menu Extras/Volume.menu" \
+    "/System/Library/CoreServices/Menu Extras/Bluetooth.menu" \
+    "/System/Library/CoreServices/Menu Extras/TimeMachine.menu"
 
 # Set highlight color to green
 defaults write NSGlobalDomain AppleHighlightColor -string "0.752941 0.964706 0.678431"
