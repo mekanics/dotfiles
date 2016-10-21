@@ -45,6 +45,8 @@ cask 'betterzipql'
 
 cask 'slate'
 
+cask 'controlplane'
+
 cask 'disk-inventory-x'
 
 cask 'dropbox'
