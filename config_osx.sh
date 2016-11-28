@@ -357,7 +357,7 @@ defaults write com.apple.dock tilesize -int 65
 defaults write com.apple.dock mineffect -string "genie"
 
 # Minimize windows into their application’s icon
-defaults write com.apple.dock minimize-to-application -bool true
+defaults write com.apple.dock minimize-to-application -bool false
 
 # Enable spring loading for all Dock items
 defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true
