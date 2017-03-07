@@ -2,7 +2,7 @@
 
 # Install dotfiles
 # Shamelessly copied from github.com/swissmanu/, which is shamelessly copied from github.com/pstadler/
-for symlink in gitconfig gitignore_global slate zshrc gemrc
+for symlink in gitconfig gitignore_global slate zshrc gemrc gitmessage
 do
 	rm ~/.$symlink
 	ln -s $PWD/$symlink ~/.$symlink

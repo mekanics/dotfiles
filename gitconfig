@@ -20,3 +20,4 @@
 	helper = osxkeychain
 [commit]
 	gpgsign = true
+	template = ~/.gitmessage
