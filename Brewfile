@@ -27,6 +27,8 @@ brew 'rbenv-default-gems'
 
 brew 'nvm'
 
+brew 'speedtest_cli'
+
 # dev tools
 cask 'iterm2'
 cask 'webstorm'
