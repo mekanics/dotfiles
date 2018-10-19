@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RUBY_VERSION='2.3.1'
+RUBY_VERSION='2.5.3'
 
 # install xcode first
 echo "Install Xcode first: https://itunes.apple.com/ch/app/xcode/id497799835?l=en&mt=12"
