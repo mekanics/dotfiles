@@ -19,15 +19,13 @@ brew 'imagemagick', args: ['with-webp']
 brew 'jq'
 brew 'swiftlint'
 
-brew 'rancher-compose'
-
 brew 'keybase'
 
-brew 'node'
-brew 'python3'
 brew 'rbenv'
 brew 'ruby-build'
 brew 'rbenv-default-gems'
+
+brew 'nvm'
 
 # dev tools
 cask 'iterm2'
