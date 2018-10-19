@@ -31,6 +31,9 @@ alias  	middle-2/3 		move	${x}+(${w}/6);${y}	(${w}/3)*2;${h}
 alias	top				move	${x};${y}				${w};${h}/2
 alias	bottom			move	${x};${y}+${h}/2		${w};${h}/2
 alias	center			move	${x}+${w}*${centerMargin};${y}+${h}*${centerMargin}	${w}*(1-2*${centerMargin});${h}*(1-2*${centerMargin})
+alias	center-s		move	${x}+${w}*3*${centerMargin};${y}+${h}*3*${centerMargin}	${w}*(1-6*${centerMargin});${h}*(1-6*${centerMargin})
+alias	center-xs		move	${x}+${w}*4*${centerMargin};${y}+${h}*4*${centerMargin}	${w}*(1-8*${centerMargin});${h}*(1-8*${centerMargin})
+
 
 # Positions for MacBook:
 alias	mbp-full		move	${x};${y}			${w};${h}		${mon-mbp}
@@ -65,7 +68,7 @@ layout 2monitor		'Reminders'			${ext-right}
 
 
 # Bind to Keys:
-bind m:alt;cmd;ctrl			chain	${full} | ${center}
+bind m:alt;cmd;ctrl			chain	${full} | ${center} | ${center-s} | ${center-xs}
 bind left:alt;cmd;ctrl 		chain	${left} | ${left-1/3} | ${left-2/3}
 bind right:alt;cmd;ctrl 	chain	${right} | ${right-1/3} | ${right-2/3}
 bind n:alt;cmd;ctrl	chain	${middle-2/3} | ${middle-1/3}
