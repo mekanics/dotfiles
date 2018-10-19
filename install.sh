@@ -47,6 +47,12 @@ ruby -v
 
 source ~/.zshrc
 
+# Setup NVM
+mkdir $HOME/.nvm
+nvm install node
+nvm alias default node
+
+
 gem install bundler
 rbenv rehash
 bundle install --path vendor
