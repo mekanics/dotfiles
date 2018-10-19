@@ -5,13 +5,14 @@
 [mergetool]
 	keepBackup = true
 [core]
-	editor = subl --wait --new-window
+	editor = code --wait --new-window
 	excludesfile = ~/.gitignore_global
 	autocrlf = input
 [color]
 	ui = true
 [push]
 	default = matching
+	followTags = true
 [alias]
 	st = status -sb
 [pull]
@@ -21,3 +22,6 @@
 [commit]
 	gpgsign = true
 	template = ~/.gitmessage
+[gpg]
+[status]
+	showUntrackedFiles = all
