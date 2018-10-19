@@ -7,6 +7,8 @@ brew 'git-flow'
 
 brew 'wget'
 brew 'ack'
+bree 'bat'
+brew 'prettyping'
 
 brew 'ffmpeg'
 brew 'gcovr'
