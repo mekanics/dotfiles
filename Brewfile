@@ -30,11 +30,10 @@ brew 'nvm'
 # dev tools
 cask 'iterm2'
 cask 'webstorm'
-cask 'phpstorm'
 cask 'pycharm'
 cask 'heroku-toolbelt'
 cask 'docker'
-cask 'sublime-text'
+cask 'visual-studio-code'
 
 cask 'alfred'
 cask 'appcleaner'
@@ -65,7 +64,6 @@ cask 'whatsapp'
 # music
 cask 'spotify'
 cask 'sonos'
-
 
 cask 'gpgtools'
 cask 'imageoptim'
