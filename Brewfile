@@ -30,6 +30,7 @@ brew 'rbenv'
 brew 'ruby-build'
 brew 'rbenv-default-gems'
 
+brew 'yarn', args: ['without-node']
 brew 'nvm'
 
 brew 'speedtest_cli'
