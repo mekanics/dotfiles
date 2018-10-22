@@ -1,6 +1,5 @@
 cask_args appdir: '/Applications'
 
-brew caskroom/cask/brew-cask
 tap 'caskroom/cask'
 
 brew 'git', args: ['without-completions']
