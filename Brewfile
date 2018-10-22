@@ -9,7 +9,7 @@ brew 'mas'
 
 brew 'wget'
 brew 'ack'
-bree 'bat'
+brew 'bat'
 brew 'prettyping'
 
 brew 'gcovr'
