@@ -59,7 +59,6 @@ bundle install --path vendor
 
 # Setup Python
 pip install virtualenv
-pip install virtualenvwrapper
 
 # cocoapods
 echo "installing cocoapods"
