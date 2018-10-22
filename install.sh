@@ -17,6 +17,10 @@ echo "brewfile"
 brew tap Homebrew/bundle
 brew bundle
 
+# setup the dock
+echo "Setup the dock"
+./dock_apps.sh
+
 # oh-my-zsh
 echo "installing oh-my-zsh"
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
@@ -66,3 +70,4 @@ gem install cocoapods
 
 # config osx
 ./config_osx.sh
+
