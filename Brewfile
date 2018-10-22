@@ -1,5 +1,6 @@
 cask_args appdir: '/Applications'
 
+brew caskroom/cask/brew-cask
 tap 'caskroom/cask'
 
 brew 'git', args: ['without-completions']
@@ -41,9 +42,9 @@ cask 'pycharm'
 cask 'docker'
 cask 'visual-studio-code'
 cask 'virtualbox'
-cask 'teamviewwe'
+cask 'teamviewer'
 cask 'kismac'
-cask 'gpgtools'
+cask 'gpg-suite'
 cask 'imageoptim'
 cask 'poedit'
 brew 'httpie'
@@ -65,7 +66,7 @@ cask 'disk-inventory-x'
 
 # drive
 cask 'dropbox'
-cask 'google-drive'
+cask 'google-drive-file-stream'
 
 # browsers
 cask 'firefox'
