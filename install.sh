@@ -51,22 +51,27 @@ ruby -v
 
 source ~/.zshrc
 
+gem install bundler
+rbenv rehash
+bundle install --path vendor
+
+# cocoapods
+echo "installing cocoapods"
+gem install cocoapods
+
+# fastlane
+echo "installing fastlane"
+gem install fastlane
+
+# Setup Python
+pip install virtualenv
+
 # Setup NVM
 mkdir $HOME/.nvm
 nvm install node
 nvm alias default node
 
 
-gem install bundler
-rbenv rehash
-bundle install --path vendor
-
-# Setup Python
-pip install virtualenv
-
-# cocoapods
-echo "installing cocoapods"
-gem install cocoapods
 
 # config osx
 ./config_osx.sh

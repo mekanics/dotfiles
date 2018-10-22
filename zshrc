@@ -139,14 +139,14 @@ export PATH="/usr/local/opt/gpg-agent/bin:$PATH"
 # yarn
 export PATH="$PATH:`yarn global bin`"
 
-# Fastlane
-export PATH="$HOME/.fastlane/bin:$PATH"
- . ~/.fastlane/completions/completion.sh
-
 # NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 #[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Fastlane
+export PATH="$HOME/.fastlane/bin:$PATH"
+[ -s "~/.fastlane/completions/completion.sh" ] && \. ~/.fastlane/completions/completion.sh
 
 autoload -U add-zsh-hook
 load-nvmrc() {
