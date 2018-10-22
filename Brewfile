@@ -48,6 +48,7 @@ cask 'gpgtools'
 cask 'imageoptim'
 cask 'poedit'
 brew 'httpie'
+brew 'httperf'
 
 
 cask 'alfred'
