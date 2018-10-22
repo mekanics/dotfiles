@@ -26,7 +26,7 @@ function set_dock_apps () {
     # add some apps
 
     $DEF_W $DOCK 'persistent-apps' \
-    -array-add "$APP_HEAD/Applications/Airmail%203.app/$APP_TAIL"
+    -array-add "$APP_HEAD/Applications/Airmail 3.app/$APP_TAIL"
 
     $DEF_W $DOCK 'persistent-apps' \
     -array-add "$APP_HEAD/Applications/Messages.app/$APP_TAIL"
