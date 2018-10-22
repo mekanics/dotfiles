@@ -79,7 +79,7 @@ cask 'whatsapp'
 
 # music
 cask 'spotify'
-cask 'sonos'
+cask 'homebrew/cask-drivers/sonos'
 
 # design
 cask 'sketch'
