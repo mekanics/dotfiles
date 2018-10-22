@@ -24,7 +24,7 @@ brew 'gettext', link: true
 
 brew 'ctop'
 
-brew 'keybase'
+cask 'keybase'
 
 brew 'rbenv'
 brew 'ruby-build'
