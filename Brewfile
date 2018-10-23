@@ -63,6 +63,8 @@ cask 'controlplane'
 
 cask 'disk-inventory-x'
 
+cask 'omniplan'
+
 # drive
 cask 'dropbox'
 cask 'google-drive-file-stream'
