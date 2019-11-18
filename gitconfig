@@ -25,3 +25,13 @@
 [gpg]
 [status]
 	showUntrackedFiles = all
+[gitflow "branch"]
+	master = production
+	develop = master
+[gitflow "prefix"]
+	versiontag = v
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
