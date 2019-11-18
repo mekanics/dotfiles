@@ -3,7 +3,8 @@ cask_args appdir: '/Applications'
 tap 'caskroom/cask'
 
 brew 'git', args: ['without-completions']
-brew 'git-flow'
+brew 'git-lfs'
+brew 'git-flow-avh'
 
 brew 'mas'
 
@@ -35,6 +36,7 @@ brew 'yarn', args: ['without-node']
 brew 'speedtest_cli'
 
 # dev tools
+brew 'tmux'
 cask 'iterm2'
 cask 'webstorm'
 cask 'pycharm'
@@ -48,6 +50,7 @@ cask 'imageoptim'
 cask 'poedit'
 brew 'httpie'
 brew 'httperf'
+brew 'testdisk'
 
 
 cask 'alfred'
