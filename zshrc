@@ -1,4 +1,4 @@
- # Path to your oh-my-zsh installation.
+# Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load.
@@ -75,9 +75,9 @@ export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='subl --new-window'
+	export EDITOR='code --new-window'
 else
-  export EDITOR='subl --new-window'
+	export EDITOR='code --new-window'
 fi
 
 # Compilation flags
@@ -85,9 +85,9 @@ fi
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
-if [ -z "$SSH_AUTH_SOCK" ] ; then
-  eval `ssh-agent -s`
-  ssh-add
+if [ -z "$SSH_AUTH_SOCK" ]; then
+	eval $(ssh-agent -s)
+	ssh-add
 fi
 
 # rbenv
@@ -105,28 +105,26 @@ alias fixElCapitan="sudo chown -R $(whoami):admin /usr/local"
 
 ### open Xcode shortcut
 openx() {
-    fileToOpen='';
-    find . -maxdepth 1 -name *.xcworkspace -print0 | while IFS= read -r -d '' file; do
-        fileToOpen=$file
-    done
+	fileToOpen=''
+	find . -maxdepth 2 -name *.xcworkspace -print0 | while IFS= read -r -d '' file; do
+		fileToOpen=$file
+	done
 
-    if [ -n "$fileToOpen" ]
-    then
-        echo "opening $fileToOpen"
-        open $fileToOpen
-    else
-        find . -maxdepth 1 -name *.xcodeproj -print0 | while IFS= read -r -d '' file; do
-            fileToOpen=$file
-        done
+	if [ -n "$fileToOpen" ]; then
+		echo "opening $fileToOpen"
+		open $fileToOpen
+	else
+		find . -maxdepth 2 -name *.xcodeproj -print0 | while IFS= read -r -d '' file; do
+			fileToOpen=$file
+		done
 
-        if [ -n "$fileToOpen" ]
-        then
-            echo "opening $fileToOpen"
-            open $fileToOpen
-        else
-            echo "No xcode files to open."
-        fi
-    fi
+		if [ -n "$fileToOpen" ]; then
+			echo "opening $fileToOpen"
+			open $fileToOpen
+		else
+			echo "No xcode files to open."
+		fi
+	fi
 }
 
 # autosuggestion
@@ -145,11 +143,11 @@ export PATH="/usr/local/opt/gpg-agent/bin:$PATH"
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 # yarn
-export PATH="$PATH:`yarn global bin`"
+export PATH="$PATH:$(yarn global bin)"
 
 # Fastlane
 export PATH="$HOME/.fastlane/bin:$PATH"
@@ -157,21 +155,25 @@ export PATH="$HOME/.fastlane/bin:$PATH"
 
 autoload -U add-zsh-hook
 load-nvmrc() {
-  local node_version="$(nvm version)"
-  local nvmrc_path="$(nvm_find_nvmrc)"
+	local node_version="$(nvm version)"
+	local nvmrc_path="$(nvm_find_nvmrc)"
 
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+	if [ -n "$nvmrc_path" ]; then
+		local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
 
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$node_version" ]; then
-      nvm use
-    fi
-  elif [ "$node_version" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
-  fi
+		if [ "$nvmrc_node_version" = "N/A" ]; then
+			nvm install
+		elif [ "$nvmrc_node_version" != "$node_version" ]; then
+			nvm use
+		fi
+	elif [ "$node_version" != "$(nvm version default)" ]; then
+		echo "Reverting to nvm default version"
+		nvm use default
+	fi
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
+
+# REACT NATIVE
+# use the local version of react-native
+alias react-native="yarn react-native"
