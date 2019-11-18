@@ -48,10 +48,17 @@ HIST_STAMPS="dd.mm.yyyy"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+######################################################################
+
+# TMUX
+ZSH_TMUX_AUTOSTART=true
+
+######################################################################
+
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-flow svn osx ruby rails rake brew gem rvm heroku pod capistrano zsh-syntax-highlighting npm nvm node bower heroku docker kubectl pip docker-compose bundler zsh-autosuggestions swiftpm)
+plugins=(tmux git git-flow-completion svn osx ruby rails rake brew gem rvm heroku pod capistrano zsh-syntax-highlighting npm nvm node bower heroku docker kubectl pip docker-compose bundler zsh-autosuggestions swiftpm react-native yarn)
 
 source $ZSH/oh-my-zsh.sh
 
