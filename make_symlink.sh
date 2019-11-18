@@ -5,7 +5,7 @@
 for symlink in gitconfig gitignore_global slate zshrc gemrc gitmessage tmux.conf
 do
 	rm ~/.$symlink
-	ln -s $PWD/$symlink ~/.$symlink
+	ln -s $PWD/dotfiles/$symlink ~/.$symlink
 done
 
 rm ~/.oh-my-zsh/themes/alex.zsh-theme
