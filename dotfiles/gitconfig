@@ -44,3 +44,5 @@
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
+[url "git@git.kilokilo.ch:"]
+	insteadOf = https://git.kilokilo.ch/
