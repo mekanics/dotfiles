@@ -1,7 +1,15 @@
 [user]
+	useConfigOnly = true
+	email = alexandre.joly@kilokilo.ch
+	name = Alexandre Joly
+[user "work"]
 	name = Alexandre Joly
 	email = alexandre.joly@kilokilo.ch
 	signingkey = 54F09A63
+[user "private"]
+	name = Alexandre Joly
+	email = alexandre.joly@mekanics.ch
+	signingkey = 3E455AC8BE4EBB23
 [mergetool]
 	keepBackup = true
 [core]
@@ -15,6 +23,7 @@
 	followTags = true
 [alias]
 	st = status -sb
+	identity = "! git config user.name \"$(git config user.$1.name)\"; git config user.email \"$(git config user.$1.email)\"; git config user.signingkey \"$(git config user.$1.signingkey)\"; :"
 [pull]
 	rebase = true
 [credential]
