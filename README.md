@@ -5,7 +5,7 @@
 To install the whole thing, run this
 
 ```bash
-git clone https://github.com/holman/dotfiles.git ~/.dotfiles
+git clone https://github.com/mekanics/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 script/bootstrap
 ```
