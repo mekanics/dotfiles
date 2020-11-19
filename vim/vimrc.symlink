@@ -1,0 +1,45 @@
+" vim-plug
+call plug#begin()
+
+Plug 'vimwiki/vimwiki'
+
+call plug#end()
+
+
+
+set nocompatible
+filetype plugin on
+syntax on
+
+let mapleader = ","
+
+
+" {{{ Vimwiki plugin settings and specific functions: "
+"
+let g:vimwiki_folding='expr' "this allows the folding to work for markdown
+
+let g:vimwiki_list = [{
+          \ 'path': '~/Documents/vimwiki',
+          \ 'template_path': '~/Documents/vimwiki/templates/',
+          \ 'nested_syntaxes': {
+          \   'javascript': 'javascript',
+          \   'bash': 'sh'
+          \  },
+          \ 'template_default': 'default',
+          \ 'syntax': 'markdown',
+          \ 'ext': '.md',
+          \ 'path_html': '~/Documents/vimwiki/site_html/',
+          \ 'custom_wiki2html': 'vimwiki_markdown',
+          \ 'template_ext': '.tpl',
+          \ 'auto_tags': 1,
+          \ 'auto_diary_index': 1,
+          \ }]
+
+" autocmd FileType vimwiki set spell spelllang=en_gb
+
+au BufNewFile ~/Documents/vimwiki/diary/*.md :silent 0r !~/.vim/bin/generate-vimwiki-diary-template '%'
+
+" This lines saves the queen
+set foldlevel=30
+
+" }}}

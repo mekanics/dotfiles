@@ -1,0 +1,316 @@
+tap "codeclimate/formulae"
+tap "heroku/brew"
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-drivers"
+tap "homebrew/core"
+tap "jabley/wrk2"
+tap "wagoodman/dive"
+tap "wix/brew"
+tap "xwmx/taps"
+# Search tool like grep, but optimized for programmers
+brew "ack"
+# GNU internationalization (i18n) and localization (l10n) library
+brew "gettext"
+# Portable Foreign Function Interface library
+brew "libffi"
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@1.1"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.8"
+# Automatic configure script builder
+brew "autoconf"
+# Shell extension to jump to frequently used directories
+brew "autojump"
+# Tool for generating GNU Standards-compliant Makefiles
+brew "automake"
+# Official Amazon AWS command-line interface
+brew "awscli"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
+# Swiss army knife for network attacks and monitoring
+brew "bettercap"
+# Remove large files or passwords from Git history like git-filter-branch
+brew "bfg"
+# Vector graphics library with cross-device output support
+brew "cairo"
+# Dependency manager for Cocoa projects
+brew "cocoapods"
+# GNU File, Shell, and Text utilities
+brew "coreutils"
+# Reimplementation of ctags(1)
+brew "ctags"
+# Top-like interface for container metrics
+brew "ctop"
+# GNU data recovery tool
+brew "ddrescue"
+# Pack, ship and run any application as a lightweight container
+brew "docker"
+# Generic library support script
+brew "libtool"
+# GNU Pretty Good Privacy (PGP) package
+brew "gnupg", link: false
+# Bandwidth-efficient encrypted backup
+brew "duplicity"
+# Toolkit for image loading and pixel buffer manipulation
+brew "gdk-pixbuf"
+# This library is for the GeoIP Legacy format (dat)
+brew "geoip"
+# Generate introspection data for GObject libraries
+brew "gobject-introspection"
+# GSettings schemas for desktop components
+brew "gsettings-desktop-schemas"
+# Framework for layout and rendering of i18n text
+brew "pango"
+# Toolkit for creating graphical user interfaces
+brew "gtk+3"
+# Multipurpose sniffer/interceptor/logger for switched LAN
+brew "ettercap"
+# Easiest way to build and release mobile apps
+brew "fastlane"
+# Play, record, convert, and stream audio and video
+brew "ffmpeg"
+# Reports from gcov test coverage program
+brew "gcovr"
+# Graphics library to dynamically manipulate images
+brew "gd"
+# Geometry Engine
+brew "geos"
+# GNOME XML library
+brew "libxml2"
+# Framework for scientific data networking
+brew "libdap"
+# Package for scientific computing with Python
+brew "numpy", link: false
+# Cross-platform application and UI framework
+brew "qt"
+# PDF rendering library (based on the xpdf-3.0 code base)
+brew "poppler"
+# Geospatial Data Abstraction Library
+brew "gdal"
+# GIF image/animation creator/editor
+brew "gifsicle"
+# Distributed revision control system
+brew "git"
+# AVH edition of git-flow
+brew "git-flow-avh"
+# Git extension for versioning large files
+brew "git-lfs"
+# Audit git repos for secrets
+brew "gitleaks"
+# GUI toolkit
+brew "gtk+"
+# Improved top (interactive process viewer)
+brew "htop"
+# Tool for measuring webserver performance
+brew "httperf"
+# User-friendly cURL replacement (command-line HTTP client)
+brew "httpie"
+# USB multiplexor library for iOS devices
+brew "libusbmuxd"
+# Library to communicate with iOS devices natively
+brew "libimobiledevice", args: ["HEAD"]
+# Tool for managing apps on iOS devices
+brew "ideviceinstaller"
+# ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
+brew "libheif"
+# Tools and libraries to manipulate images in many formats
+brew "imagemagick"
+# Install and debug iPhone apps from the command-line
+brew "ios-deploy"
+# Update of iperf: measures TCP, UDP, and SCTP bandwidth
+brew "iperf3"
+# Lightweight and flexible command-line JSON processor
+brew "jq"
+# Modern load testing tool, using Go and JavaScript
+brew "k6"
+# Sophisticated file transfer program
+brew "lftp"
+# Library to render SVG files using Cairo
+brew "librsvg"
+# C websockets server library
+brew "libwebsockets"
+# Mac App Store command-line interface
+brew "mas"
+# Intercept, modify, replay, save HTTP/S traffic
+brew "mitmproxy"
+# Network grep
+brew "ngrep"
+# Port scanning utility for large networks
+brew "nmap"
+# 7-Zip (high compression file archiver) implementation
+brew "p7zip"
+# Shell command parallelization utility
+brew "parallel"
+# Tool to automatically fix PHP coding standards issues
+brew "php-cs-fixer"
+# Wrapper to colorize and simplify ping's output
+brew "prettyping"
+# Python 3 bindings for the Cairo graphics library
+brew "py3cairo"
+# Python version management
+brew "pyenv"
+# Pyenv plugin to manage virtualenv
+brew "pyenv-virtualenv"
+# GNOME Python bindings (based on GObject Introspection)
+brew "pygobject3"
+# QR Code generation
+brew "qrencode"
+# Unified tool to manage your Rancher server
+brew "rancher-cli"
+# Install various Ruby versions and implementations
+brew "ruby-build"
+# Ruby version manager
+brew "rbenv"
+# Auto-installs gems for Ruby installs
+brew "rbenv-default-gems"
+# Perl-powered file rename script with many helpful built-ins
+brew "rename"
+# Fast, efficient and secure backup program
+brew "restic"
+# Low-level access to audio, keyboard, mouse, joystick and graphics
+brew "sdl"
+# Autoformat shell script source code
+brew "shfmt"
+# CLI tools supporting SpatiaLite
+brew "spatialite-tools"
+# Command-line interface for https://speedtest.net bandwidth tests
+brew "speedtest-cli"
+# Tool to enforce Swift style and conventions
+brew "swiftlint"
+# User interface to the TELNET protocol
+brew "telnet"
+# Powerful free data recovery utility
+brew "testdisk"
+# Code-search similar to ack
+brew "the_silver_searcher"
+# Terminal multiplexer
+brew "tmux"
+# Display directories as trees (with optional color/HTML output)
+brew "tree"
+# Watch files and take action when they change
+brew "watchman"
+# Internet file retriever
+brew "wget"
+# Graphical network analyzer and capture tool
+brew "wireshark"
+# JavaScript package manager
+brew "yarn"
+# General-purpose lossless data-compression library
+brew "zlib"
+# Code Climate CLI
+brew "codeclimate/formulae/codeclimate"
+# Everything you need to get started with Heroku
+brew "heroku/brew/heroku"
+# HTTP benchmarking tool
+brew "jabley/wrk2/wrk2", args: ["HEAD"]
+# A tool for exploring each layer in a docker image
+brew "wagoodman/dive/dive"
+# Apple simulator utilities
+brew "wix/brew/applesimutils"
+brew "xwmx/taps/nb"
+cask "1password"
+cask "adobe-creative-cloud"
+cask "alacritty"
+cask "alfred"
+cask "altair-graphql-client"
+cask "android-studio"
+cask "appcleaner"
+cask "balenaetcher"
+cask "betterzip"
+cask "controlplane"
+cask "cyberduck"
+cask "db-browser-for-sqlite"
+cask "deepl"
+cask "disk-inventory-x"
+cask "docker"
+cask "dropbox"
+cask "duet"
+cask "electrum"
+cask "fastlane"
+cask "firefox"
+cask "flipper"
+cask "gnucash"
+cask "google-chrome"
+cask "google-drive-file-stream"
+cask "gpg-suite"
+cask "handbrake"
+cask "i1profiler"
+cask "imageoptim"
+cask "intel-haxm"
+cask "iterm2"
+cask "jdownloader"
+cask "keybase"
+cask "netspot"
+cask "omniplan"
+cask "oracle-jdk"
+cask "oversight"
+cask "pgadmin4"
+cask "poedit"
+cask "portfolioperformance"
+cask "postman"
+cask "pycharm"
+cask "qgis"
+cask "qlcolorcode"
+cask "qlimagesize"
+cask "qlmarkdown"
+cask "qlstephen"
+cask "qlvideo"
+cask "quicklook-json"
+cask "quicklookase"
+cask "raspberry-pi-imager"
+cask "react-native-debugger"
+cask "realm-studio"
+cask "sdformatter"
+cask "sequel-pro"
+cask "sketch"
+cask "skyfonts"
+cask "skype"
+cask "slack"
+cask "slate"
+cask "sonos"
+cask "spotify"
+cask "suspicious-package"
+cask "swimat"
+cask "teamviewer"
+cask "telegram"
+cask "transmission"
+cask "typora"
+cask "unity"
+cask "virtualbox"
+cask "visual-studio-code"
+cask "vlc"
+cask "vnc-viewer"
+cask "webpquicklook"
+cask "whatsapp"
+cask "zettlr"
+mas "Affinity Photo", id: 824183456
+mas "Airmail", id: 918858936
+mas "AJA System Test Lite", id: 1092006274
+mas "Apple Configurator 2", id: 1037126344
+mas "Better", id: 1121192229
+mas "DaVinci Resolve", id: 571213070
+mas "Deliveries", id: 924726344
+mas "Developer", id: 640199958
+mas "Frank DeLoupe", id: 530458789
+mas "Grammarly for Safari", id: 1462114288
+mas "Harvest", id: 506189836
+mas "Icon Set Creator", id: 939343785
+mas "ifolor Designer", id: 446366603
+mas "iMovie", id: 408981434
+mas "iStat Menus", id: 1319778037
+mas "Keynote", id: 409183694
+mas "Microsoft Remote Desktop", id: 1295203466
+mas "Microsoft Remote Desktop", id: 715768417
+mas "nef", id: 1479391704
+mas "NFC Tools for Desktop", id: 1392471092
+mas "Numbers", id: 409203825
+mas "OmniGraffle", id: 1142578753
+mas "Pages", id: 409201541
+mas "Paste JSON as Code • quicktype", id: 1330801220
+mas "Screens", id: 1224268771
+mas "Tweetbot", id: 557168941
+mas "WiFi Explorer", id: 494803304
+mas "WireGuard", id: 1451685025
+mas "Wix Photo Albums", id: 1281329434
+mas "Xcode", id: 497799835

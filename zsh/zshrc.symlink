@@ -11,8 +11,6 @@ ZSH_THEME="alex"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias cat='bat'
-alias ping='prettyping --nolegend'
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -58,7 +56,11 @@ ZSH_TMUX_AUTOSTART=true
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(tmux git git-flow-completion svn osx ruby rails rake brew gem rvm heroku pod capistrano zsh-syntax-highlighting npm nvm node bower heroku docker kubectl pip docker-compose bundler zsh-autosuggestions swiftpm react-native yarn)
+plugins=(tmux git osx colored-man-pages)
+plugins+=(yarn npm nvm node)
+plugins+=(brew pod swiftpm react-native bundler pip gem rvm)
+plugins+=(docker docker-compose)
+plugins+=(zsh-syntax-highlighting zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -72,10 +74,11 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-	export EDITOR='code --new-window'
+	export EDITOR='vim'
 else
 	export EDITOR='code --new-window'
 fi
@@ -90,90 +93,39 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
 	ssh-add
 fi
 
-# rbenv
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-
-# GO
-export GOPATH=~/go
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-
-### FIX El Capitan rights
-alias fixElCapitan="sudo chown -R $(whoami):admin /usr/local"
-
-### open Xcode shortcut
-openx() {
-	fileToOpen=''
-	find . -maxdepth 2 -name *.xcworkspace -print0 | while IFS= read -r -d '' file; do
-		fileToOpen=$file
-	done
-
-	if [ -n "$fileToOpen" ]; then
-		echo "opening $fileToOpen"
-		open $fileToOpen
-	else
-		find . -maxdepth 2 -name *.xcodeproj -print0 | while IFS= read -r -d '' file; do
-			fileToOpen=$file
-		done
-
-		if [ -n "$fileToOpen" ]; then
-			echo "opening $fileToOpen"
-			open $fileToOpen
-		else
-			echo "No xcode files to open."
-		fi
-	fi
-}
-
 # autosuggestion
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
-
-# Shorthand version of "openx", use "ox" instead.
-alias ox=openx
 
 # My own additions:
 if [ -f ~/.zshrc_local ]; then
 	source ~/.zshrc_local
 fi
 
-# GPG
-export PATH="/usr/local/opt/gpg-agent/bin:$PATH"
+# DOTFILES
+################################################################################
 
-# NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+# shortcut to my dotfiles path is $DOT
+export DOT=$HOME/.dotfiles
 
-# yarn
-export PATH="$PATH:$(yarn global bin)"
+# all of our zsh files
+typeset -U config_files
+config_files=($DOT/**/*.zsh)
 
-# Fastlane
-export PATH="$HOME/.fastlane/bin:$PATH"
-[ -s "~/.fastlane/completions/completion.sh" ] && \. ~/.fastlane/completions/completion.sh
+# load the path files
+for path_file in ${(M)config_files:#*/path.zsh}; do 
+  source $path_file
+done
 
-autoload -U add-zsh-hook
-load-nvmrc() {
-	local node_version="$(nvm version)"
-	local nvmrc_path="$(nvm_find_nvmrc)"
+# load the alias files
+for alias_file in ${(M)config_files:#*/aliases.zsh}; do
+  source $alias_file
+done
 
-	if [ -n "$nvmrc_path" ]; then
-		local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+# load the config files
+for config_file in ${(M)config_files:#*/config.zsh}; do
+  source $config_file
+done
 
-		if [ "$nvmrc_node_version" = "N/A" ]; then
-			nvm install
-		elif [ "$nvmrc_node_version" != "$node_version" ]; then
-			nvm use
-		fi
-	elif [ "$node_version" != "$(nvm version default)" ]; then
-		echo "Reverting to nvm default version"
-		nvm use default
-	fi
-}
-add-zsh-hook chpwd load-nvmrc
-load-nvmrc
+################################################################################
 
-# REACT NATIVE
-# use the local version of react-native
-alias react-native="yarn react-native"
+

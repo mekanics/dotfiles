@@ -1,11 +1,14 @@
 cask_args appdir: '/Applications'
 
-tap 'caskroom/cask'
+# 'brew tap'
+tap "homebrew/cask"
 
 brew 'git', args: ['without-completions']
 brew 'git-lfs'
 brew 'git-flow-avh'
+brew "gitleaks"
 
+# mac-cli
 brew 'mas'
 
 brew 'wget'
@@ -22,26 +25,26 @@ brew 'jq'
 brew 'swiftlint'
 brew 'gettext', link: true
 
-
 brew 'ctop'
 
 cask 'keybase'
 
-brew 'rbenv'
-brew 'ruby-build'
-brew 'rbenv-default-gems'
+# brew 'rbenv'
+# brew 'ruby-build'
+# brew 'rbenv-default-gems'
 
 brew 'yarn', args: ['without-node']
 
 brew 'speedtest_cli'
+brew 'youtube-dl'
 
 # dev tools
-brew 'tmux'
 cask 'iterm2'
-cask 'webstorm'
-cask 'pycharm'
+cask "alacritty"
+
 cask 'docker'
 cask 'visual-studio-code'
+cask 'android-studio'
 cask 'virtualbox'
 cask 'teamviewer'
 cask 'kismac'
@@ -51,43 +54,48 @@ cask 'poedit'
 brew 'httpie'
 brew 'httperf'
 brew 'testdisk'
+brew "ddrescue"
 
+cask 'sf-symbols'
 
 cask 'alfred'
 cask 'appcleaner'
 cask '1password'
 
-cask 'betterzip'
-cask 'betterzipql'
-
 cask 'slate'
-
-cask 'controlplane'
 
 cask 'disk-inventory-x'
 
 cask 'omniplan'
+
+# "hacking"
+brew "ettercap"
+brew "wireshark"
 
 # drive
 cask 'dropbox'
 cask 'google-drive-file-stream'
 
 # browsers
-cask 'firefox'
 cask 'google-chrome'
+cask 'brave-browser'
+cask 'firefox'
 
 # communication
-cask 'skype'
+cask 'whatsapp'
 cask 'slack'
 cask 'telegram'
-cask 'whatsapp'
+cask 'skype'
+cask 'microsoft-teams'
+
+# vpn
+cask 'forticlient'
 
 # music
 cask 'spotify'
-cask 'homebrew/cask-drivers/sonos'
+cask 'sonos'
 
 # design
-cask 'sketch'
 cask 'adobe-creative-cloud'
 
 # Quicklook plugins
@@ -101,6 +109,8 @@ cask 'quicklook-json'
 cask 'sequel-pro'
 cask 'sqlitebrowser'
 cask 'mongohub'
+cask "realm-studio"
+cask "pgadmin4"
 
 # video
 brew 'ffmpeg', args: ['with-libvorbis', 'with-libvpx', 'with-x265']
@@ -114,16 +124,35 @@ cask 'skyfonts'
 cask 'cyberduck'
 cask 'filezilla'
 
-# crypto
+# cryptocurrency
 cask 'electrum'
 
-mas 'Airmail 3', id: 918858936
-mas 'Deliveries', id: 924726344
+# Portfolio
+cask 'portfolioperformance'
+
+# GIS
+cask "qgis"
+
+# Misc
+cask 'stellarium'
+
+# AppStore
+mas "Airmail", id: 918858936
+mas "Deliveries", id: 924726344
 mas 'Frank DeLoupe', id: 530458789
 mas 'Harvest', id: 506189836
-mas 'iFlicks 2', id: 731062389
-mas 'iMovie', id: 408981434
 mas 'iStat Menus', id: 1319778037
-mas 'Screens 4', id: 1224268771
+mas "Screens", id: 1224268771
 mas 'Tweetbot', id: 557168941
 mas 'Xcode', id: 497799835
+mas "WiFi Explorer", id: 494803304
+mas "Affinity Photo", id: 824183456
+mas "Apple Configurator 2", id: 1037126344
+mas "DaVinci Resolve", id: 571213070
+mas "NFC Tools for Desktop", id: 1392471092
+
+# Office
+cask "typora"
+mas "Keynote", id: 409183694
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
