@@ -3,7 +3,7 @@ cask_args appdir: '/Applications'
 # 'brew tap'
 tap "homebrew/cask"
 
-brew 'git', args: ['without-completions']
+brew 'git'
 brew 'git-lfs'
 brew 'git-flow-avh'
 brew "gitleaks"
@@ -20,7 +20,7 @@ brew 'gcovr'
 brew 'htop'
 brew 'httperf'
 brew 'nmap'
-brew 'imagemagick', args: ['with-webp']
+brew 'imagemagick'
 brew 'jq'
 brew 'swiftlint'
 brew 'gettext', link: true
@@ -33,7 +33,7 @@ cask 'keybase'
 # brew 'ruby-build'
 # brew 'rbenv-default-gems'
 
-brew 'yarn', args: ['without-node']
+# brew 'yarn', args: ['without-node']
 
 brew 'speedtest_cli'
 brew 'youtube-dl'
@@ -47,7 +47,6 @@ cask 'visual-studio-code'
 cask 'android-studio'
 cask 'virtualbox'
 cask 'teamviewer'
-cask 'kismac'
 cask 'gpg-suite'
 cask 'imageoptim'
 cask 'poedit'
@@ -55,6 +54,8 @@ brew 'httpie'
 brew 'httperf'
 brew 'testdisk'
 brew "ddrescue"
+cask 'zlib'
+cask 'bzip2'
 
 cask 'sf-symbols'
 
@@ -93,7 +94,7 @@ cask 'forticlient'
 
 # music
 cask 'spotify'
-cask 'sonos'
+# cask 'sonos'
 
 # design
 cask 'adobe-creative-cloud'
@@ -107,13 +108,12 @@ cask 'quicklook-json'
 
 # DB
 cask 'sequel-pro'
-cask 'sqlitebrowser'
-cask 'mongohub'
-cask "realm-studio"
+cask 'db-browser-for-sqlite'
+cask "mongodb-realm-studio"
 cask "pgadmin4"
 
 # video
-brew 'ffmpeg', args: ['with-libvorbis', 'with-libvpx', 'with-x265']
+brew 'ffmpeg'
 cask 'vlc'
 cask 'handbrake'
 
@@ -121,8 +121,9 @@ cask 'handbrake'
 cask 'skyfonts'
 
 # ftp
-cask 'cyberduck'
-cask 'filezilla'
+cask 'transmit'
+# cask 'cyberduck'
+# cask 'filezilla'
 
 # cryptocurrency
 cask 'electrum'
@@ -139,7 +140,7 @@ cask 'stellarium'
 # AppStore
 mas "Airmail", id: 918858936
 mas "Deliveries", id: 924726344
-mas 'Frank DeLoupe', id: 530458789
+# mas 'Frank DeLoupe', id: 530458789
 mas 'Harvest', id: 506189836
 mas 'iStat Menus', id: 1319778037
 mas "Screens", id: 1224268771
