@@ -42,20 +42,24 @@ brew 'youtube-dl'
 cask 'iterm2'
 cask "alacritty"
 
-cask 'docker'
+## ide
 cask 'visual-studio-code'
+cask 'poedit'
+
+cask 'docker'
 cask 'android-studio'
 cask 'virtualbox'
 cask 'teamviewer'
 cask 'gpg-suite'
 cask 'imageoptim'
-cask 'poedit'
 brew 'httpie'
 brew 'httperf'
 brew 'testdisk'
 brew "ddrescue"
-cask 'zlib'
-cask 'bzip2'
+
+## python
+brew 'zlib'
+brew 'bzip2'
 
 cask 'sf-symbols'
 
