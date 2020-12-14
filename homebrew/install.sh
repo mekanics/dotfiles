@@ -2,9 +2,6 @@
 
 # Homebrew
 
-if test $(which brew); then
-    echo "Homebrew already installed -> exit"
-    exit 0
+if test ! $(command -v brew); then
+    curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash
 fi
-
-curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash
