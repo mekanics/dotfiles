@@ -28,6 +28,7 @@ brew 'gettext', link: true
 brew 'ctop'
 
 cask 'keybase'
+cask 'lulu'
 
 # brew 'rbenv'
 # brew 'ruby-build'
@@ -79,7 +80,7 @@ brew "wireshark"
 
 # drive
 cask 'dropbox'
-cask 'google-drive-file-stream'
+cask 'google-drive'
 
 # browsers
 cask 'google-chrome'
@@ -87,9 +88,9 @@ cask 'brave-browser'
 cask 'firefox'
 
 # communication
-cask 'whatsapp'
-cask 'slack'
+cask 'signal'
 cask 'telegram'
+cask 'slack'
 cask 'skype'
 cask 'microsoft-teams'
 
@@ -140,6 +141,7 @@ cask "qgis"
 
 # Misc
 cask 'stellarium'
+cask 'gnucash'
 
 # AppStore
 mas "Airmail", id: 918858936
