@@ -1,0 +1,67 @@
+#!/bin/sh
+###
+### clean-downloads — clean up the downloads folder
+### will delete old files in '~/Downloads'.
+###
+### Usage:
+###   clean-downloads [options]
+###
+### Options:
+###   -d, --days <number>   The number of days to keep (default: 21)
+###   --dry-run             Does not delete the files
+###   -v, --verbose         Log out the delete files
+###   -h, --help            Show this help message and exit"
+
+set -e
+
+help() {
+    awk -F'### ' '/^###/ { print $2 }' "$0"
+}
+
+KEEP_DAYS=21
+DOWNLOAD_DIR=~/Downloads
+
+while test $# -gt 0; do
+    case "$1" in
+    "-h" | "--help")
+        help
+        exit
+        ;;
+    "-d" | "--days")
+        KEEP_DAYS="${2:-KEEP_DAYS}"
+        shift
+        ;;
+    "--dry-run")
+        DRY_RUN=true
+        ;;
+    "-v" | "--verbose")
+        VERBOSE=true
+        ;;
+    *)
+        echo "Invalid option: $1"
+        help
+        exit
+        ;;
+    esac
+    shift
+done
+
+cmd="-delete"
+if [ "$DRY_RUN" = true ]; then
+    cmd="-print"
+fi
+
+if [ "$VERBOSE" = true -a "$DRY_RUN" != true ]; then
+    cmd="${cmd} -print"
+fi
+
+args="-atime +$KEEP_DAYS -mtime +$KEEP_DAYS"
+args="${args} -ctime +$KEEP_DAYS"
+dargs="-empty -mtime +$KEEP_DAYS"
+
+if [ ."${DOWNLOAD_DIR#/}" != ."$DOWNLOAD_DIR" -a -d $DOWNLOAD_DIR ]; then
+    cd $DOWNLOAD_DIR
+
+    find -dx . -fstype local -type f $args $cmd
+    find -dx . -fstype local ! -name . -type d $dargs $cmd
+fi
