@@ -51,7 +51,7 @@ brew update
 
 echo "› brew bundle"
 brew install mas
-brew bundle --file=$DOT/homebrew/Brewfile
+brew bundle --file=$DOT/homebrew/Brewfile || true
 
 # Install software
 echo "› $DOT/script/install"

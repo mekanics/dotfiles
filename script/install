@@ -4,7 +4,14 @@
 
 set -e
 
+info() {
+    printf "\r  [ \033[00;34m..\033[0m ] $1\n"
+}
+
 cd "$(dirname $0)"/..
 
 # find the installers and run them iteratively
-find . -name install.sh | while read installer ; do sh -c "${installer}" ; done
+find . -name install.sh | while read installer; do
+    info "$installer"
+    sh -c "${installer}"
+done

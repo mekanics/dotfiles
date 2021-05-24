@@ -1,7 +1,7 @@
 ### open Xcode shortcut
 openx() {
     fileToOpen=''
-    find . -maxdepth 2 -name *.xcworkspace -print0 | while IFS= read -r -d '' file; do
+    find . -maxdepth 2 -name "*.xcworkspace" -print0 | while IFS= read -r -d '' file; do
         fileToOpen=$file
     done
 
@@ -9,7 +9,7 @@ openx() {
         echo "opening $fileToOpen"
         open $fileToOpen
     else
-        find . -maxdepth 2 -name *.xcodeproj -print0 | while IFS= read -r -d '' file; do
+        find . -maxdepth 2 -name "*.xcodeproj" -print0 | while IFS= read -r -d '' file; do
             fileToOpen=$file
         done
 

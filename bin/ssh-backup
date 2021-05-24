@@ -55,7 +55,7 @@ backup() {
     mkdir -p $DESTINATION_SSH
     cp -R ~/.ssh/* $DESTINATION_SSH
 
-    if test $(which gpg); then
+    if test $(command -c gpg); then
         echo "› Backup gpg keys"
         mkdir -p $DESTINATION_GPG
 
