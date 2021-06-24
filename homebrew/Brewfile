@@ -22,6 +22,7 @@ brew 'httperf'
 brew 'nmap'
 brew 'imagemagick'
 brew 'jq'
+brew 'autojump'
 brew 'swiftlint'
 brew 'gettext', link: true
 
