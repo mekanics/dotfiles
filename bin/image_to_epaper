@@ -1,0 +1,107 @@
+#!/bin/sh
+###
+### image_to_epaper — convert and resize images to 800x480 monochrome
+###
+###
+### Usage:
+###   image_to_epaper [options] <folder or image>
+###
+### Options:
+###   -b, --black   Use a black background instead of white
+###   --blured      Use a blured background
+###   -m, --mono    Convert the image to b&w
+###   --no-extent   Do not extend the image to 800x480
+###   --hash        Hasch the filename
+###   -h, --help    Show this help message and exit"
+
+help() {
+    awk -F'### ' '/^###/ { print $2 }' "$0"
+    exit
+}
+
+BLURED_BG=false
+NO_EXTENT=false
+MONO=false
+HASH=false
+BG_COLOR=white
+
+while test $# -gt 1; do
+    case "$1" in
+    "-h" | "--help")
+        help
+        ;;
+    "--blured")
+        BLURED_BG=true
+        ;;
+    "-b" | "--black")
+        BG_COLOR=black
+        ;;
+    "-m" | "--mono")
+        MONO=true
+        ;;
+    "--no-extent")
+        NO_EXTENT=true
+        ;;
+    "--hash")
+        HASH=true
+        ;;
+    *)
+        echo "Invalid option: $1"
+        help
+        ;;
+    esac
+    shift
+done
+
+FOLDER="${1:-.}"
+OUT_FOLDER="$FOLDER/bmp_out"
+
+[ -d "$OUT_FOLDER" ] || mkdir "$OUT_FOLDER"
+
+EXTENT_CMD="-compose Copy -gravity center -extent 800x480"
+if [ "$NO_EXTENT" = true ]; then
+    EXTENT_CMD=""
+fi
+
+MONOCHROM_CMD="-dither FloydSteinberg -remap pattern:gray50"
+if [ "$MONO" = true ]; then
+    MONOCHROM_CMD="-dither FloydSteinberg -monochrome"
+fi
+
+for img_path in "$FOLDER"/*.jpg; do
+    img=${img_path##*/}
+    img=${img%.*} # Remove the extention
+
+    if [ "$HASH" = true ]; then
+        img=$(echo $img | md5)
+        img=${img:0:8}
+    fi
+
+    OUTPUT="BMP3:$OUT_FOLDER/$img-1.bmp"
+
+    if [ "$BLURED_BG" = true ]; then
+
+        convert "$img_path" \
+            $MONOCHROM_CMD \
+            \( -clone 0 -resize "800x480>" -background $BG_COLOR $EXTENT_CMD -blur 0x100 \) \
+            \( -clone 0 -resize "800x480>" \) \
+            -delete 0 -gravity center -compose over -composite \
+            -interlace none \
+            $MONOCHROM_CMD \
+            "$OUTPUT"
+
+    else
+
+        convert "$img_path" \
+            -resize "800x480>" \
+            -gravity center \
+            -background $BG_COLOR \
+            $EXTENT_CMD \
+            -interlace none \
+            $MONOCHROM_CMD \
+            "$OUTPUT"
+
+    fi
+
+    echo ".\c"
+done

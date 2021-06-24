@@ -1,0 +1,45 @@
+#!/bin/sh
+###
+### aws_s3_delete — delete all S3 buckets containing the specified name
+###
+###
+### Usage:
+###   aws_s3_delete [options] <S3 bucket name>
+###
+### Options:
+###   --do-it       Actualy deletes the buckets
+###   -h, --help    Show this help message and exit"
+
+help() {
+    awk -F'### ' '/^###/ { print $2 }' "$0"
+    exit
+}
+
+DO_IT=false
+
+while test $# -gt 1; do
+    case "$1" in
+    "-h" | "--help")
+        help
+        ;;
+    "--do-it")
+        DO_IT=true
+        ;;
+    *)
+        echo "Invalid option: $1"
+        help
+        ;;
+    esac
+    shift
+done
+
+BUCKET_NAME="${1:-<BUCKET NAME NOT SET>}"
+
+DRY_RUN="echo "
+if [ "$DO_IT" = true ]; then
+    DRY_RUN=""
+fi
+
+for bucket in $(aws s3 ls | awk '{print $3}' | grep "${BUCKET_NAME}"); do
+    $DRY_RUN aws s3 rb "s3://${bucket}" --force
+done
