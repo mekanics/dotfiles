@@ -1,0 +1,52 @@
+[user]
+	useConfigOnly = true
+	email = alexandre.joly@kilokilo.ch
+	name = Alexandre Joly
+[user "work"]
+	name = Alexandre Joly
+	email = alexandre.joly@kilokilo.ch
+	signingkey = 54F09A63
+[user "private"]
+	name = Alexandre Joly
+	email = alexandre.joly@mekanics.ch
+	signingkey = 3E455AC8BE4EBB23
+[mergetool]
+	keepBackup = true
+[core]
+	editor = code --wait --new-window
+	excludesfile = ~/.gitignore_global
+	autocrlf = input
+[color]
+	ui = true
+[push]
+	default = matching
+	followTags = true
+[alias]
+	st = status -sb
+	identity = "! git config user.name \"$(git config user.$1.name)\"; git config user.email \"$(git config user.$1.email)\"; git config user.signingkey \"$(git config user.$1.signingkey)\"; :"
+[pull]
+	rebase = true
+[credential]
+	helper = osxkeychain
+[commit]
+	gpgsign = true
+	template = ~/.gitmessage
+[gpg]
+[status]
+	showUntrackedFiles = all
+[gitflow "branch"]
+	master = production
+	develop = master
+[gitflow "prefix"]
+	versiontag = v
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[url "git@git.kilokilo.ch:"]
+	insteadOf = https://git.kilokilo.ch/
+[init]
+	defaultBranch = main
+[merge]
+	ff = no

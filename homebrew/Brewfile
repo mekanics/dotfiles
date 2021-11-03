@@ -1,0 +1,166 @@
+cask_args appdir: '/Applications'
+
+# 'brew tap'
+tap "homebrew/cask"
+
+brew 'git'
+brew 'git-lfs'
+brew 'git-flow-avh'
+brew "gitleaks"
+
+# mac-cli
+brew 'mas'
+
+brew 'wget'
+brew 'ack'
+brew 'bat'
+brew 'prettyping'
+
+brew 'gcovr'
+brew 'htop'
+brew 'httperf'
+brew 'nmap'
+brew 'imagemagick'
+brew 'jq'
+brew 'autojump'
+brew 'swiftlint'
+brew 'gettext', link: true
+
+brew 'ctop'
+
+cask 'keybase'
+cask 'lulu'
+
+# brew 'rbenv'
+# brew 'ruby-build'
+# brew 'rbenv-default-gems'
+
+# brew 'yarn', args: ['without-node']
+
+brew 'speedtest_cli'
+brew 'youtube-dl'
+
+# dev tools
+cask 'iterm2'
+cask "alacritty"
+
+## ide
+cask 'visual-studio-code'
+cask 'poedit'
+
+cask 'docker'
+cask 'android-studio'
+cask 'virtualbox'
+cask 'teamviewer'
+cask 'gpg-suite'
+cask 'imageoptim'
+brew 'httpie'
+brew 'httperf'
+brew 'testdisk'
+brew "ddrescue"
+
+## python
+brew 'zlib'
+brew 'bzip2'
+
+cask 'sf-symbols'
+
+cask 'alfred'
+cask 'appcleaner'
+cask '1password'
+
+cask 'slate'
+
+cask 'disk-inventory-x'
+
+cask 'omniplan'
+
+# "hacking"
+brew "ettercap"
+brew "wireshark"
+
+# drive
+cask 'dropbox'
+cask 'google-drive'
+
+# browsers
+cask 'google-chrome'
+cask 'brave-browser'
+cask 'firefox'
+
+# communication
+cask 'signal'
+cask 'telegram'
+cask 'slack'
+cask 'skype'
+cask 'microsoft-teams'
+
+# vpn
+cask 'forticlient'
+
+# music
+cask 'spotify'
+# cask 'sonos'
+
+# design
+cask 'adobe-creative-cloud'
+
+# Quicklook plugins
+cask 'qlcolorcode'
+cask 'qlimagesize'
+cask 'qlmarkdown'
+cask 'qlstephen'
+cask 'quicklook-json'
+
+# DB
+cask 'sequel-pro'
+cask 'db-browser-for-sqlite'
+cask "mongodb-realm-studio"
+cask "pgadmin4"
+
+# video
+brew 'ffmpeg'
+cask 'vlc'
+cask 'handbrake'
+
+# font
+cask 'skyfonts'
+
+# ftp
+cask 'transmit'
+# cask 'cyberduck'
+# cask 'filezilla'
+
+# cryptocurrency
+cask 'electrum'
+
+# Portfolio
+cask 'portfolioperformance'
+
+# GIS
+cask "qgis"
+
+# Misc
+cask 'stellarium'
+cask 'gnucash'
+
+# AppStore
+mas "Airmail", id: 918858936
+mas "Deliveries", id: 924726344
+# mas 'Frank DeLoupe', id: 530458789
+mas 'Harvest', id: 506189836
+mas 'iStat Menus', id: 1319778037
+mas "Screens", id: 1224268771
+mas 'Tweetbot', id: 557168941
+mas 'Xcode', id: 497799835
+mas "WiFi Explorer", id: 494803304
+mas "Affinity Photo", id: 824183456
+mas "Apple Configurator 2", id: 1037126344
+mas "DaVinci Resolve", id: 571213070
+mas "NFC Tools for Desktop", id: 1392471092
+
+# Office
+cask "typora"
+mas "Keynote", id: 409183694
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541

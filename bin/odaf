@@ -1,0 +1,36 @@
+#!/bin/sh
+###
+### ockdf — open the cloudkit development folder
+### helps you find the CloudKit data when you're developing.
+###
+### Usage:
+###   ockdf [options] <APPNAME>
+###
+### Options:
+###   -h, --help    Show this help message and exit"
+
+set -e
+
+help() {
+    awk -F'### ' '/^###/ { print $2 }' "$0"
+    exit
+}
+
+while test $# -gt 1; do
+    case "$1" in
+    "-h" | "--help")
+        help
+        ;;
+    "-e" | "--edit")
+        exec $EDITOR "$DOT"
+        exit
+        ;;
+    *)
+        echo "Invalid option: $1"
+        help
+        ;;
+    esac
+    shift
+done
+
+PROJECT_NAME = $1

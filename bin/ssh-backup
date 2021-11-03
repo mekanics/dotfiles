@@ -1,0 +1,97 @@
+#!/bin/sh
+###
+### ssh-backup — ssh & gpg backup
+### backup the ssh keys and the gpg keys.
+###
+### Usage:
+###   ssh-backup [options]
+###
+### Options:
+###   -r, --restore <path>    Restore the ssh & gpg keys from a folder
+###   -h, --help              Show this help message and exit"
+
+set -e
+
+help() {
+    awk -F'### ' '/^###/ { print $2 }' "$0"
+}
+
+restore() {
+    $RESTORE_FOLDER_SSH=$RESTORE_FOLDER/ssh
+    $RESTORE_FOLDER_GPG=$RESTORE_FOLDER/gpg
+
+    echo "› Restore ssh keys from '$RESTORE_FOLDER'"
+    if test -d "$RESTORE_FOLDER_SSH"; then
+        cp -R $RESTORE_FOLDER_SSH ~/.ssh/
+
+        chown $(whoami) ~/.ssh/*
+        chmod 600 ~/.ssh/*
+        chmod 644 ~/.ssh/*.pub
+
+        exec ssh-agent bash
+        ssh-add ~/.ssh/id_rsa
+    else
+        echo "'$RESTORE_FOLDER_SSH' does not exist"
+    fi
+
+    echo "› Restore gpg keys"
+
+    if test -d "$RESTORE_FOLDER_SSH"; then
+        gpg --import $RESTORE_FOLDER_GPG/*.asc
+    else
+        echo "'$RESTORE_FOLDER_GPG' does not exist"
+    fi
+
+    echo "› Done"
+}
+
+backup() {
+    DESTINATION=~/Desktop/$(date '+%Y-%m-%d')_ssh_gpg
+    DESTINATION_SSH=$DESTINATION/ssh
+    DESTINATION_GPG=$DESTINATION/gpg
+
+    rm -Rf $DESTINATION
+    echo "› Backup ssh keys to '$DESTINATION'"
+    mkdir -p $DESTINATION_SSH
+    cp -R ~/.ssh/* $DESTINATION_SSH
+
+    if test $(command -c gpg); then
+        echo "› Backup gpg keys"
+        mkdir -p $DESTINATION_GPG
+
+        gpg --list-secret-keys --with-colons \
+            2>/dev/null |
+            grep '^sec:' |
+            cut -d ':' -f 5 |
+            while read -r ID; do
+                gpg --export-secret-keys $ID >$DESTINATION_GPG/$ID.asc
+            done
+
+    fi
+
+    open $DESTINATION
+    echo "› Done"
+
+}
+
+while test $# -gt 0; do
+    case "$1" in
+    "-h" | "--help")
+        help
+        exit
+        ;;
+    "-r" | "--restore")
+        RESTORE_FOLDER="${2:-.}"
+        restore
+        exit
+        ;;
+    *)
+        echo "Invalid option: $1"
+        help
+        exit
+        ;;
+    esac
+    shift
+done
+
+backup

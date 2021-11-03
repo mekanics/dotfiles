@@ -5,25 +5,16 @@
 To install the whole thing, run this
 
 ```bash
-./install.sh
+git clone https://github.com/holman/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+script/bootstrap
 ```
 
-### symlink
+## What's included
 
-want only the symlinks?
-
-```bash
-./make_symlink.sh
-```
-
-### OSX Config
-
-only the OSX config
-
-```bash
-./config_osx.sh
-```
-
-## What's includes
-
-todo
+-   [x] Git config
+-   [x] AppStore App
+-   [x] Homebrew
+-   [ ] tmux settings
+-   [ ] vim settings
+-   [ ] gpg
