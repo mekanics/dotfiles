@@ -60,18 +60,21 @@ install_fonts() {
     success "Fonts installed"
 }
 
+install_dependencies() {
+    # Install all other dependencies
+    info "Installing dependencies"
+    if source bin/dot | while read -r data; do info "$data"; done; then
+        success "Dependencies installed"
+    else
+        fail "Error installing dependencies"
+    fi
+}
+
 install_xcode
 install_fonts
 install_ohmyzsh
 install_dotfiles
-
-# Install all other dependencies
-info "Installing dependencies"
-if source bin/dot | while read -r data; do info "$data"; done; then
-    success "Dependencies installed"
-else
-    fail "Error installing dependencies"
-fi
+install_dependencies
 
 echo ''
 echo '  All installed!'
