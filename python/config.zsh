@@ -1,4 +1,5 @@
 export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
 
 # zlib
 export LDFLAGS="${LDFLAGS} -L/usr/local/opt/zlib/lib"
@@ -12,6 +13,7 @@ export CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/bzip2/include"
 
 # pyenv / virtualenv
 if command -v pyenv 1>/dev/null 2>&1; then
+    eval "$(pyenv init --path)"
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 fi
