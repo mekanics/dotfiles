@@ -1,0 +1,62 @@
+#!/bin/sh
+###
+### rfv — rename exported Figma variants
+###
+###
+### Usage:
+###   rfv [options] <name> <folder or images>
+###
+### Options:
+###   -n, --name    Set the file name prefix
+###   -h, --help    Show this help message and exit"
+
+help() {
+    awk -F'### ' '/^###/ { print $2 }' "$0"
+    exit
+}
+
+FILES=()
+while [[ $# -gt 0 ]]; do
+    key="$1"
+
+    case $key in
+    "-h" | "--help")
+        help
+        ;;
+
+    "-n" | "--name")
+        PREFIX="$2"
+        shift # past argument
+        shift # past value
+        ;;
+    *)                # unknown option
+        FILES+=("$1") # save it in an array for later
+        shift         # past argument
+        ;;
+    esac
+done
+
+set -- "${FILES[@]}" # restore positional parameters
+
+for f in "${FILES[@]}"; do
+    filename=$(basename -- "$f")
+    extension="${filename##*.}"
+    filename="${filename%.*}"
+
+    variants=$(echo $filename | tr "," "\n")
+
+    newname=${PREFIX:-"noname"}
+
+    # echo "$filename"
+    for variant in $variants; do
+        # echo "> [$variant]"
+        property=$(cut -d "=" -f2 <<<$variant)
+
+        newname="${newname}_${property}"
+    done
+    newname="${newname}.${extension}"
+
+    # echo "==> $newname"
+    mv "$f" "$newname"
+
+done
