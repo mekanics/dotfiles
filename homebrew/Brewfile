@@ -2,14 +2,14 @@ cask_args appdir: '/Applications'
 
 # 'brew tap'
 tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+tap "buo/cask-upgrade"
+brew "mas"
 
 brew 'git'
 brew 'git-lfs'
 brew 'git-flow-avh'
 brew "gitleaks"
-
-# mac-cli
-brew 'mas'
 
 brew 'wget'
 brew 'ack'
@@ -30,10 +30,6 @@ brew 'ctop'
 
 cask 'keybase'
 cask 'lulu'
-
-# brew 'rbenv'
-# brew 'ruby-build'
-# brew 'rbenv-default-gems'
 
 # brew 'yarn', args: ['without-node']
 
