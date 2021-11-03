@@ -23,7 +23,7 @@ install_ohmyzsh() {
     info "Installing oh-my-zsh"
     if [ -z ${ZSH+x} ]; then
 
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
         source ~/.zshrc
         success "oh-my-zsh installed"
