@@ -5,7 +5,7 @@ DOTFILES_ROOT=$(pwd -P)
 
 set -e
 
-source ./helper
+source ./script/helper
 
 echo ''
 
