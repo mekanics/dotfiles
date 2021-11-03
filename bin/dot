@@ -37,6 +37,9 @@ while test $# -gt 0; do
     shift
 done
 
+# Ask for the administrator password upfront
+sudo -v
+
 # # Set macOS defaults
 # echo "› Set macOS defaults"
 # $DOT/macos/set-defaults.sh
