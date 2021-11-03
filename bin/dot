@@ -37,9 +37,9 @@ while test $# -gt 0; do
     shift
 done
 
-# Set macOS defaults
-echo "› Set macOS defaults"
-$DOT/macos/set-defaults.sh
+# # Set macOS defaults
+# echo "› Set macOS defaults"
+# $DOT/macos/set-defaults.sh
 
 # Install homebrew
 echo "› Install homebrew"
