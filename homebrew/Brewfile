@@ -40,14 +40,18 @@ brew 'youtube-dl'
 cask 'iterm2'
 cask "alacritty"
 
+# kubernetes
+brew 'k9s'
+brew 'kubectl'
+
 ## ide
 cask 'visual-studio-code'
 cask 'poedit'
 
 cask 'docker'
 cask 'android-studio'
-cask 'virtualbox'
-cask 'teamviewer'
+# cask 'virtualbox'
+# cask 'teamviewer'
 cask 'gpg-suite'
 cask 'imageoptim'
 brew 'httpie'
@@ -67,7 +71,7 @@ cask '1password'
 
 cask 'slate'
 
-cask 'disk-inventory-x'
+# cask 'disk-inventory-x'
 
 cask 'omniplan'
 
