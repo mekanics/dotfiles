@@ -22,6 +22,7 @@ set -g pane-base-index 1
 # Continuum
 ########################
 set -g @continuum-restore 'on'
+set -g @continuum-save-interval '15'
 
 # DESIGN
 ########################
