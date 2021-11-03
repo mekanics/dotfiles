@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 
 # Markdown
 code --install-extension yzhang.markdown-all-in-one

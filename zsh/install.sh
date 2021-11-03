@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 
 # oh-my-zsh will be installed directly by 'script/install'
 
