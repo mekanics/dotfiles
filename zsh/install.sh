@@ -7,7 +7,13 @@ DOT=$HOME/.dotfiles
 ln -s $DOT/zsh/themes/alex.zsh-theme ~/.oh-my-zsh/custom/themes/alex.zsh-theme
 
 # zsh syntax higlighting
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+dst=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+if [ ! -d "$dst" ]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $dst
+fi
 
 # install auto suggestions
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+dst=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+if [ ! -d "$dst" ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions $dst
+fi
