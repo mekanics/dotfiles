@@ -18,3 +18,5 @@ script/bootstrap
 -   [ ] tmux settings
 -   [ ] vim settings
 -   [ ] gpg
+-   [ ] auto mount smb
+-   [ ] auto delete old downloads

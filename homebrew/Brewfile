@@ -40,6 +40,10 @@ brew 'youtube-dl'
 cask 'iterm2'
 cask "alacritty"
 
+# gpg
+cask 'gpg-suite'
+brew 'pinentry-mac'
+
 # kubernetes
 brew 'k9s'
 brew 'kubectl'
@@ -52,7 +56,6 @@ cask 'docker'
 cask 'android-studio'
 # cask 'virtualbox'
 # cask 'teamviewer'
-cask 'gpg-suite'
 cask 'imageoptim'
 brew 'httpie'
 brew 'httperf'
