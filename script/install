@@ -4,7 +4,7 @@
 
 set -e
 
-source ./helper
+source ./script/helper
 
 cd "$(dirname $0)"/..
 
