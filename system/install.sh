@@ -3,7 +3,7 @@
 cd "$(dirname "$0")/.."
 pwd
 DOTFILES_ROOT=$(pwd -P)
-source script/helper
+source ./script/helper
 
 if test -f ~/.zshrc_local; then
     source ~/.zshrc_local
