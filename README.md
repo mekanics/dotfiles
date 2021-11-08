@@ -15,8 +15,8 @@ script/bootstrap
 -   [x] Git config
 -   [x] AppStore App
 -   [x] Homebrew
--   [ ] tmux settings
--   [ ] vim settings
+-   [x] tmux settings
+-   [x] vim settings
 -   [ ] gpg
 -   [ ] auto mount smb
--   [ ] auto delete old downloads
+-   [x] auto delete old downloads
