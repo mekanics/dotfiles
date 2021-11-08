@@ -13,4 +13,4 @@ export NVM_DIR="$HOME/.nvm"
 nvm install --lts
 
 ## YARN
-brew install yarn
+brew install yarn --without-node
