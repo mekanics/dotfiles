@@ -116,10 +116,11 @@ cask 'qlstephen'
 cask 'quicklook-json'
 
 # DB
+brew "postgresql"
+cask "pgadmin4"
 cask 'sequel-pro'
 cask 'db-browser-for-sqlite'
 cask "mongodb-realm-studio"
-cask "pgadmin4"
 
 # video
 brew 'ffmpeg'
