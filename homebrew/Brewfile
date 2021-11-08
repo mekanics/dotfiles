@@ -111,7 +111,7 @@ cask 'adobe-creative-cloud'
 # Quicklook plugins
 cask 'qlcolorcode'
 cask 'qlimagesize'
-cask 'qlmarkdown'
+cask 'sbarex-qlmarkdown'
 cask 'qlstephen'
 cask 'quicklook-json'
 
