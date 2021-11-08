@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 ###
 ### rfv — rename exported Figma variants
 ###

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 ###
 ### clean-downloads — clean up the downloads folder
 ### will delete old files in '~/Downloads'.

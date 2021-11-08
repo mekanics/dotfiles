@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 set -eu
 # trigger a CI release by tagging with next patch version
 

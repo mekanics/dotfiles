@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 ###
 ### aws_s3_delete — delete all S3 buckets containing the specified name
 ###

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 set -eu
 
 # create a new tmp branch

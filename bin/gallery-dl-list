@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 ###
 ### gallery-dl-list — download the images from a given list of URLs
 ###
