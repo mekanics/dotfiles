@@ -39,6 +39,7 @@ brew 'youtube-dl'
 # dev tools
 cask 'iterm2'
 cask "alacritty"
+brew 'awscli'
 
 # gpg
 cask 'gpg-suite'
