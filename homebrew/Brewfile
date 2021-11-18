@@ -15,6 +15,7 @@ brew 'wget'
 brew 'ack'
 brew 'bat'
 brew 'prettyping'
+brew 'gallery-dl'
 
 brew 'gcovr'
 brew 'htop'
@@ -29,7 +30,10 @@ brew 'gettext', link: true
 brew 'ctop'
 
 cask 'keybase'
+
 cask 'lulu'
+cask 'blockblock'
+cask 'whatsyoursign'
 
 # brew 'yarn', args: ['without-node']
 
@@ -98,6 +102,7 @@ cask 'telegram'
 cask 'slack'
 cask 'skype'
 cask 'microsoft-teams'
+cask 'discord'
 
 # vpn
 cask 'forticlient'
@@ -138,6 +143,7 @@ cask 'transmit'
 
 # cryptocurrency
 cask 'electrum'
+cask 'ledger-live'
 
 # Portfolio
 cask 'portfolioperformance'
