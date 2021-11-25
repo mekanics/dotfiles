@@ -50,6 +50,6 @@ fi
 
 echo "› Starting download with '$FILE'"
 
-xargs <"$FILE" -P3 -n1 gallery-dl --filter "extension not in ('mp4')" -d ./
+xargs <"$FILE" -P3 -n1 gallery-dl --range "-100" --filter "extension not in ('mp4')" -d ./
 
 echo "› Done"
