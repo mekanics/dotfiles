@@ -24,6 +24,7 @@
 [alias]
 	st = status -sb
 	identity = "! git config user.name \"$(git config user.$1.name)\"; git config user.email \"$(git config user.$1.email)\"; git config user.signingkey \"$(git config user.$1.signingkey)\"; :"
+	mwps = push -u origin -o merge_request.create -o merge_request.target=main -o merge_request.merge_when_pipeline_succeeds
 [pull]
 	rebase = true
 [credential]
