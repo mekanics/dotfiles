@@ -52,6 +52,7 @@ brew 'pinentry-mac'
 # kubernetes
 brew 'k9s'
 brew 'kubectl'
+brew 'k3sup'
 
 ## ide
 cask 'visual-studio-code'
