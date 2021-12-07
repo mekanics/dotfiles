@@ -1,0 +1,4 @@
+#!/bin/zsh
+set -eu
+# commit the changelogs
+git add changelogs/ && git commit changelogs -m "Add a changelog entry 📝"
