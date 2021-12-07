@@ -1,16 +1,20 @@
 #!/bin/bash
 
-## NVM
+## NVS
+export NVS_HOME="$HOME/.nvs"
+git clone https://github.com/jasongin/nvs "$NVS_HOME"
+. "$NVS_HOME/nvs.sh" install
 
-if test ! $(command -v nvm); then
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-fi
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-
-nvm install --lts
+nvs add lts
+nvs link lts
 
 ## YARN
-brew install yarn --without-node
+brew install yarn
+brew uninstall node --ignore-dependencies
+
+## Link NODE
+mkdir $HOMEBREW_CELLAR/node
+ln -s $NVS_HOME/default/ $HOMEBREW_CELLAR/node
+
+brew link --overwrite node
+brew pin node

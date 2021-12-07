@@ -62,7 +62,7 @@ fi
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(tmux git macos sudo colored-man-pages)
-plugins+=(yarn npm nvm node)
+plugins+=(yarn npm node)
 plugins+=(brew pod swiftpm react-native bundler pip gem chruby)
 plugins+=(docker docker-compose)
 plugins+=(aws)
