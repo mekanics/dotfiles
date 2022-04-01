@@ -3,3 +3,6 @@ export NVS_HOME="$HOME/.nvs"
 
 nvs auto on
 nvs use
+
+# Disable next telemetry
+export NEXT_TELEMETRY_DISABLED=1
