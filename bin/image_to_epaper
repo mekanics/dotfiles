@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 ###
 ### image_to_epaper — convert and resize images to 800x480 monochrome
 ###
@@ -68,7 +68,7 @@ if [ "$MONO" = true ]; then
     MONOCHROM_CMD="-dither FloydSteinberg -monochrome"
 fi
 
-for img_path in "$FOLDER"/*.jpg; do
+for img_path in "$FOLDER"/*.{png,jpg,jpeg}; do
     img=${img_path##*/}
     img=${img%.*} # Remove the extention
 
@@ -103,5 +103,5 @@ for img_path in "$FOLDER"/*.jpg; do
 
     fi
 
-    echo ".\c"
+    echo -e ".\c"
 done
