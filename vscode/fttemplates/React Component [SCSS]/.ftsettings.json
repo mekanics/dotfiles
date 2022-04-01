@@ -1,0 +1,4 @@
+{
+	"omitParentDirectory": true,
+	"openFilesWhenDone": ["<FTName | pascalcase>/<FTName | pascalcase>.tsx"]
+}
