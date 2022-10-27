@@ -1,3 +1,6 @@
+# Timeout for commands executed by starship (in milliseconds). (default: 500)
+command_timeout = 1000
+
 # Displays text, typically a single character,
 # based on the status of the previous command.
 [character]
@@ -36,7 +39,7 @@ style = "bold red"
 
 [cmd_duration]
 min_time = 10_000  # Show command duration over 10,000 milliseconds (=10 sec)
-format = "took [$duration]($style)"    
+format = " took [$duration]($style)"    
 
 [time]
 time_format = "%T"
@@ -89,7 +92,7 @@ disabled = true
 format = "[$symbol$version](bold green) "
 
 [python]
-format = "[$symbol$version]($style) "
+format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
 style = "bold green"
 
 [docker_context]
@@ -98,3 +101,9 @@ symbol = "🐋 "
 
 [aws]
 format = '[$symbol($profile )(\($region\) )(\[$duration\])]($style)'	
+
+[rust]
+format = "[$symbol($version )]($style)"
+
+[php]
+format = "[$symbol($version )]($style)"
