@@ -53,6 +53,7 @@ brew 'pinentry-mac'
 brew 'k9s'
 brew 'kubectl'
 brew 'k3sup'
+brew 'k3d'
 
 ## ide
 cask 'visual-studio-code'
