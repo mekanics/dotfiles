@@ -1,0 +1,5 @@
+#!/bin/zsh
+set -eu
+# commit the changelogs
+git add .yalc yalc.lock
+git commit .yalc yalc.lock -m "Update the local yalc libraries 📦"
