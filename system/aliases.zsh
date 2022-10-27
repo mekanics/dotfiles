@@ -6,3 +6,9 @@ alias fixElCapitan="sudo chown -R $(whoami):admin /usr/local"
 
 alias cat='bat'
 alias ping='prettyping --nolegend'
+
+## FIX iCloud Sync
+alias fixiCloud="killall bird"
+
+## Get my WAN IP
+alias wanip="dig @resolver4.opendns.com myip.opendns.com +short"
