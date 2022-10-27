@@ -19,6 +19,13 @@ set -g @plugin 'tmux-plugins/tmux-continuum' # Continuous saving of tmux environ
 set -g base-index 1
 set -g pane-base-index 1
 
+# Key Binding
+#######################
+# Control+Shift+Left
+bind-key -n C-S-Left swap-window -t -1 \; previous-window 
+# Control+Shift+Right
+bind-key -n C-S-Right swap-window -t +1 \; next-window
+
 # Continuum
 ########################
 set -g @continuum-restore 'on'
