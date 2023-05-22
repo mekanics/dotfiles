@@ -6,6 +6,7 @@ alias fixElCapitan="sudo chown -R $(whoami):admin /usr/local"
 
 alias cat='bat'
 alias ping='prettyping --nolegend'
+alias rsyncp="rsync -az --info=progress2"
 
 ## FIX iCloud Sync
 alias fixiCloud="killall bird"
