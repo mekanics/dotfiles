@@ -1,10 +1,10 @@
 [user]
 	useConfigOnly = true
-	email = alexandre.joly@kilokilo.ch
+	email = alexandre.joly@mekanics.ch
 	name = Alexandre Joly
 [user "work"]
 	name = Alexandre Joly
-	email = alexandre.joly@kilokilo.ch
+	email = alexandre@j2y.dev
 	signingkey = 54F09A63
 [user "private"]
 	name = Alexandre Joly
