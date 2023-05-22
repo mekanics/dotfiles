@@ -7,11 +7,13 @@
 ###
 ### Options:
 ###   -f, --file    Use a file with a list of urls separted by new line (default: inspiration.txt)
+###   -m, --max     max number of images to downlaod (default: 50)
 ###   -h, --help    Show this help message and exit"
 
 set -e
 
 FILE=inspiration.txt
+MAX=50
 
 help() {
     awk -F'### ' '/^###/ { print $2 }' "$0"
@@ -22,6 +24,10 @@ while test $# -gt 0; do
     case "$1" in
     "-f" | "--file")
         FILE=${2}
+        shift
+        ;;
+    "-m" | "--max")
+        MAX=${2}
         shift
         ;;
     "-h" | "--help")
@@ -50,6 +56,6 @@ fi
 
 echo "› Starting download with '$FILE'"
 
-xargs <"$FILE" -P3 -n1 gallery-dl --range "-100" --filter "extension not in ('mp4')" -d ./
+xargs <"$FILE" -P3 -n1 gallery-dl --range "-${MAX}" --filter "extension not in ('mp4')" -d ./
 
 echo "› Done"
