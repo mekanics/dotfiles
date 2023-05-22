@@ -68,7 +68,8 @@ if [ "$MONO" = true ]; then
     MONOCHROM_CMD="-dither FloydSteinberg -monochrome"
 fi
 
-for img_path in "$FOLDER"/*.{png,jpg,jpeg}; do
+# Find all image files in the directory
+find -E "$FOLDER" -type f -maxdepth 1 -iregex '.*\.(jpeg|jpg|png|gif|bmp)$' -print0 | while IFS= read -r -d '' img_path; do
     img=${img_path##*/}
     img=${img%.*} # Remove the extention
 
