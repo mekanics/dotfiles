@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+
+    <key>Label</key>
+    <string>local.gnucash-update.plist</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StartCalendarInterval</key>
+    <!--  Weekdays are 1 - 5; Sunday is 0 and 7   -->
+    <array>
+        <dict>
+            <key>Weekday</key>
+            <integer>1</integer>
+            <key>Hour</key>
+            <integer>7</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>Day</key>
+            <integer>1</integer>
+            <key>Hour</key>
+            <integer>7</integer>
+            <key>Minute</key>
+            <integer>30</integer>
+        </dict>
+    </array>
+
+    <key>StandardErrorPath</key>
+    <string>/tmp/gnucash-update.err</string>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/gnucash-update.out</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/Applications/Gnucash.app/Contents/MacOS/gnucash-cli</string>
+      <string>--quotes</string>
+      <string>get</string>
+      <string>/Users/ajoly/Documents/Personal/Finance/gnucash.gnucash</string>
+    </array>
+
+  </dict>
+</plist>
