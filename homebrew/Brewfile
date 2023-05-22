@@ -16,6 +16,7 @@ brew 'ack'
 brew 'bat'
 brew 'prettyping'
 brew 'gallery-dl'
+brew 'rsync'
 
 brew 'gcovr'
 brew 'htop'
