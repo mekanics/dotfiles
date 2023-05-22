@@ -1,0 +1,33 @@
+#!/bin/bash
+###
+### scanpdf — adds a scan effect on a pdf
+###
+###
+### Usage:
+###   scanpdf [options] <pdf>
+###
+### Options:
+###   -h, --help    Show this help message and exit"
+
+help() {
+    awk -F'### ' '/^###/ { print $2 }' "$0"
+    exit
+}
+
+while test $# -gt 1; do
+    case "$1" in
+    "-h" | "--help")
+        help
+        ;;
+    *)
+        echo "Invalid option: $1"
+        help
+        ;;
+    esac
+    shift
+done
+
+PDF_IN="${1:-.}"
+PDF_OUT=${PDF_IN%.*}_scan.pdf
+
+convert -density 150 $PDF_IN -rotate "$([ $((RANDOM % 2)) -eq 1 ] && echo -)0.$(($RANDOM % 5 + 2))" -attenuate 0.4 +noise Multiplicative -attenuate 0.03 +noise Multiplicative -sharpen 0x1.0 $PDF_OUT
