@@ -1,0 +1,134 @@
+#!/bin/bash
+###
+### rule — adds a cursor rule to the current directory
+###
+###
+### Usage:
+###   rule <option> <rule name>
+###
+### Options:
+###   -l, --list    List the rules
+###   -a, --add     Add a rule
+###   -s, --sync    Sync a rule back to source
+###   -h, --help    Show this help message and exit"
+###
+### Notes:
+###   - the folder with the source rules can be found at
+###     ~/Development/private/cursor-rules/rules
+
+help() {
+    awk -F'### ' '/^###/ { print $2 }' "$0"
+    exit
+}
+
+# Define the rules source directory
+RULES_SOURCE_DIR="$HOME/Development/private/cursor-rules/rules"
+
+# Function to list all available rules
+list_rules() {
+    if [[ ! -d "$RULES_SOURCE_DIR" ]]; then
+        echo "Error: Rules directory not found at $RULES_SOURCE_DIR"
+        exit 1
+    fi
+    
+    echo "Available cursor rules:"
+    echo "======================"
+    find "$RULES_SOURCE_DIR" -name "*.mdc" -type f | sort | while read -r file; do
+        basename "$file" .mdc
+    done
+}
+
+# Function to add a rule to current directory
+add_rule() {
+    local rule_name="$1"
+    
+    if [[ -z "$rule_name" ]]; then
+        echo "Error: Please specify a rule name"
+        echo "Usage: rule --add <rule_name>"
+        exit 1
+    fi
+    
+    local source_file="$RULES_SOURCE_DIR/${rule_name}.mdc"
+    local target_dir=".cursor/rules"
+    local target_file="$target_dir/${rule_name}.mdc"
+    
+    # Check if source rule exists
+    if [[ ! -f "$source_file" ]]; then
+        echo "Error: Rule '$rule_name' not found in $RULES_SOURCE_DIR"
+        echo "Use 'rule --list' to see available rules"
+        exit 1
+    fi
+    
+    # Create target directory if it doesn't exist
+    if [[ ! -d "$target_dir" ]]; then
+        mkdir -p "$target_dir"
+        echo "Created directory: $target_dir"
+    fi
+    
+    # Copy the rule
+    cp "$source_file" "$target_file"
+    echo "Successfully copied rule '$rule_name' to $target_file"
+}
+
+# Function to sync a rule back to the source directory
+sync_rule() {
+    local rule_name="$1"
+    
+    if [[ -z "$rule_name" ]]; then
+        echo "Error: Please specify a rule name"
+        echo "Usage: rule --sync <rule_name>"
+        exit 1
+    fi
+    
+    local source_dir="$RULES_SOURCE_DIR"
+    local local_file=".cursor/rules/${rule_name}.mdc"
+    local target_file="$source_dir/${rule_name}.mdc"
+    
+    # Check if local rule exists
+    if [[ ! -f "$local_file" ]]; then
+        echo "Error: Local rule '$rule_name' not found in .cursor/rules/"
+        echo "Make sure the rule exists locally before syncing"
+        exit 1
+    fi
+    
+    # Check if source directory exists
+    if [[ ! -d "$source_dir" ]]; then
+        echo "Error: Source rules directory not found at $source_dir"
+        exit 1
+    fi
+    
+    # Ask for confirmation if target file already exists
+    if [[ -f "$target_file" ]]; then
+        echo "Warning: Rule '$rule_name' already exists in source directory"
+        read -p "Do you want to overwrite it? (y/N): " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            echo "Sync cancelled"
+            exit 0
+        fi
+    fi
+    
+    # Copy the rule back to source
+    cp "$local_file" "$target_file"
+    echo "Successfully synced rule '$rule_name' back to $target_file"
+}
+
+# Parse command line arguments
+case "${1:-}" in
+    -l|--list)
+        list_rules
+        ;;
+    -a|--add)
+        add_rule "$2"
+        ;;
+    -s|--sync)
+        sync_rule "$2"
+        ;;
+    -h|--help|"")
+        help
+        ;;
+    *)
+        echo "Error: Unknown option '$1'"
+        help
+        ;;
+esac
