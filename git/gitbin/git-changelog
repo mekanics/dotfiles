@@ -1,5 +1,18 @@
 #!/bin/zsh
 set -eu
 # commit the changelogs
-git add changelogs
-git commit changelogs -m "Add a changelog entry 📝"
+dirs_to_commit=()
+if [[ -d ".changeset" ]]; then
+  dirs_to_commit+=(".changeset")
+fi
+if [[ -d "changelogs" ]]; then
+  dirs_to_commit+=("changelogs")
+fi
+
+if [[ ${#dirs_to_commit[@]} -eq 0 ]]; then
+  echo "No changelog directories found (.changeset or changelogs)"
+  exit 1
+fi
+
+git add "${dirs_to_commit[@]}"
+git commit "${dirs_to_commit[@]}" -m "Add a changelog entry 📝"
