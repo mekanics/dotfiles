@@ -43,6 +43,39 @@ install_dotfiles() {
     done
 }
 
+install_xdg_dotfiles() {
+    info 'Installing XDG config dotfiles'
+
+    local overwrite_all=false backup_all=false skip_all=false
+
+    # Process each XDG directory type
+    for xdg_name in config data cache state; do
+        local src_dir="$DOTFILES_ROOT/xdg/$xdg_name"
+        local dst_base=""
+
+        # Map directory names to XDG environment variables
+        case "$xdg_name" in
+            config) dst_base="${XDG_CONFIG_HOME:-$HOME/.config}" ;;
+            data)   dst_base="${XDG_DATA_HOME:-$HOME/.local/share}" ;;
+            cache)  dst_base="${XDG_CACHE_HOME:-$HOME/.cache}" ;;
+            state)  dst_base="${XDG_STATE_HOME:-$HOME/.local/state}" ;;
+        esac
+
+        if [ -d "$src_dir" ]; then
+            # Use for loop (like install_dotfiles) to keep variables in scope
+            for src in $(find "$src_dir" -type f); do
+                local relative_path="${src#$src_dir/}"
+                local dst="$dst_base/$relative_path"
+
+                # Create parent directory if needed
+                mkdir -p "$(dirname "$dst")"
+
+                link_file "$src" "$dst"
+            done
+        fi
+    done
+}
+
 install_fonts() {
     local overwrite_all=false backup_all=false skip_all=false
 
@@ -74,6 +107,7 @@ install_xcode
 install_fonts
 install_ohmyzsh
 install_dotfiles
+install_xdg_dotfiles
 install_dependencies
 
 echo ''

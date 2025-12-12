@@ -1,0 +1,12 @@
+
+[font]
+size = 14
+
+normal = { family = "DroidSansMono Nerd Font Mono", style = "Book" }
+
+[general]
+
+live_config_reload = true
+import = [
+    "~/.config/alacritty/themes/dracula.toml"
+    ]
