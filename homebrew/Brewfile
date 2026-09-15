@@ -80,7 +80,7 @@ cask 'alfred'
 cask 'appcleaner'
 cask '1password'
 
-cask 'slate'
+cask 'hammerspoon'
 
 # cask 'disk-inventory-x'
 
