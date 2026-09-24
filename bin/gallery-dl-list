@@ -56,6 +56,6 @@ fi
 
 echo "› Starting download with '$FILE'"
 
-xargs <"$FILE" -P3 -n1 gallery-dl --range "-${MAX}" --filter "extension not in ('mp4')" -d ./
+xargs <"$FILE" -P3 -n1 gallery-dl --range "-${MAX}" --filter "extension not in ('mp4')" -d ./ --cookies-from-browser firefox
 
 echo "› Done"
