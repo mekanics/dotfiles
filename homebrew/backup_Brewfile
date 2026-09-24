@@ -148,10 +148,6 @@ brew "php-cs-fixer"
 brew "prettyping"
 # Python 3 bindings for the Cairo graphics library
 brew "py3cairo"
-# Python version management
-brew "pyenv"
-# Pyenv plugin to manage virtualenv
-brew "pyenv-virtualenv"
 # GNOME Python bindings (based on GObject Introspection)
 brew "pygobject3"
 # QR Code generation
