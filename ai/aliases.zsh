@@ -1,0 +1,1 @@
+alias skills="cursor ~/.claude"
