@@ -1,0 +1,722 @@
+#!/bin/bash
+###
+### archive-project — archive old Development projects to NFS using git bundles
+### Interactively select projects from ~/Development and create git bundle archives
+### on NFS storage at mercury.local:/volume1/development-archives
+###
+### Creates two archives per project:
+###   1. Git bundle: All tracked files, branches, and tags
+###   2. Extras tarball: All gitignored files EXCEPT regenerable ones - if present
+###      Excludes: node_modules, venv, build/, dist/, coverage/, etc.
+###
+### Usage:
+###   archive-project [options]
+###
+### Options:
+###   --dry-run             Show what would be archived without doing it
+###   --force               Archive even if there are uncommitted changes
+###   -v, --verbose         Show detailed output during operations
+###   -m, --mount-point     Custom NFS mount point (default: /Volumes/development-archives)
+###   -h, --help            Show this help message and exit
+
+set -e
+
+# Get the directory where this script lives
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_DIR="$(dirname "$SCRIPT_DIR")"
+
+# Source helper functions
+if [ -f "$DOTFILES_DIR/script/helper" ]; then
+    source "$DOTFILES_DIR/script/helper"
+else
+    # Fallback if helper not available
+    info() { echo "  [..] $1"; }
+    success() { echo "  [OK] $1"; }
+    fail() { echo "  [FAIL] $1"; echo ""; exit 1; }
+fi
+
+# Default configuration
+DRY_RUN=false
+FORCE=false
+VERBOSE=false
+MOUNT_POINT="/Volumes/development-archives"
+NFS_HOST="mercury.local"
+NFS_PATH="/volume1/development-archives"
+DEV_DIR="$HOME/Development"
+
+# Counters for summary
+ARCHIVED_COUNT=0
+SKIPPED_COUNT=0
+FAILED_COUNT=0
+TOTAL_SIZE=0
+EXTRAS_COUNT=0
+NON_GIT_ARCHIVED_COUNT=0
+
+help() {
+    awk -F'### ' '/^###/ { print $2 }' "$0"
+    exit 0
+}
+
+check_dependencies() {
+    if ! command -v git &> /dev/null; then
+        fail "git is not installed. Please install git first."
+    fi
+
+    if ! command -v fzf &> /dev/null; then
+        fail "fzf is not installed. Please install fzf first."
+    fi
+
+    if [ ! -d "$DEV_DIR" ]; then
+        fail "Development directory not found: $DEV_DIR"
+    fi
+}
+
+ensure_nfs_mounted() {
+    # Check if already mounted
+    if mount | grep -q "$MOUNT_POINT"; then
+        if [ "$VERBOSE" = true ]; then
+            info "NFS already mounted at $MOUNT_POINT"
+        fi
+        return 0
+    fi
+
+    info "NFS not mounted. Attempting to mount (may require password)..."
+
+    # Create mount point if it doesn't exist
+    if [ ! -d "$MOUNT_POINT" ]; then
+        if ! sudo mkdir -p "$MOUNT_POINT" 2>/dev/null; then
+            fail "Failed to create mount point: $MOUNT_POINT"
+        fi
+    fi
+
+    # Attempt to mount
+    if ! sudo mount -t nfs "${NFS_HOST}:${NFS_PATH}" "$MOUNT_POINT" 2>/dev/null; then
+        fail "Failed to mount NFS. Please mount manually: sudo mount -t nfs ${NFS_HOST}:${NFS_PATH} $MOUNT_POINT"
+    fi
+
+    success "NFS mounted at $MOUNT_POINT"
+}
+
+find_git_projects() {
+    if [ "$VERBOSE" = true ]; then
+        info "Discovering git projects in $DEV_DIR..."
+    fi
+
+    # Find all .git directories and extract their parent directories
+    # Convert to relative paths from Development directory
+    find "$DEV_DIR" -name ".git" -type d -maxdepth 6 2>/dev/null | while read -r git_dir; do
+        project_dir="$(dirname "$git_dir")"
+        # Convert to relative path and add [git] prefix
+        echo "[git] ${project_dir#$DEV_DIR/}"
+    done | sort
+}
+
+find_non_git_projects() {
+    if [ "$VERBOSE" = true ]; then
+        info "Discovering non-git projects in $DEV_DIR..."
+    fi
+
+    # Find directories at depth 2 and 3
+    # Exclude known non-project directories
+    find "$DEV_DIR" -mindepth 2 -maxdepth 3 -type d \
+        ! -name "node_modules" \
+        ! -name ".cache" \
+        ! -name "venv" \
+        ! -name ".venv" \
+        ! -name "__pycache__" \
+        ! -name "dist" \
+        ! -name "build" \
+        ! -name "target" \
+        ! -name ".next" \
+        ! -name ".nuxt" \
+        ! -name "coverage" \
+        ! -name ".coverage" \
+        ! -name "vendor" \
+        ! -name "bower_components" \
+        ! -name ".*" \
+        2>/dev/null | while read -r dir; do
+        # Skip if it's a git repo, inside one, or contains any git repos within it
+        if [ ! -d "$dir/.git" ] && ! git -C "$dir" rev-parse --git-dir &>/dev/null 2>&1; then
+            # Check if there are any .git directories anywhere within this directory
+            if ! find "$dir" -name ".git" -type d 2>/dev/null | grep -q .; then
+                # Convert to relative path and add [no-git] prefix
+                echo "[no-git] ${dir#$DEV_DIR/}"
+            fi
+        fi
+    done | sort
+}
+
+find_all_projects() {
+    if [ "$VERBOSE" = true ]; then
+        info "Discovering all projects (git and non-git) in $DEV_DIR..."
+    fi
+
+    # Combine both git and non-git projects, then sort
+    { find_git_projects; find_non_git_projects; } | sort
+}
+
+check_git_status() {
+    local project_path="$1"
+    local status_output
+
+    status_output=$(git -C "$project_path" status --porcelain 2>/dev/null)
+
+    if [ -z "$status_output" ]; then
+        return 0  # Clean
+    else
+        return 1  # Dirty
+    fi
+}
+
+parse_project_path() {
+    local relative_path="$1"
+    local category
+    local project
+
+    # Extract category and project from path
+    # Format: category/project or category/client/project
+    category="$(dirname "$relative_path")"
+    project="$(basename "$relative_path")"
+
+    # Handle case where it's just a single-level path
+    if [ "$category" = "." ]; then
+        category="misc"
+    fi
+
+    echo "$category|$project"
+}
+
+has_non_git_files() {
+    local project_path="$1"
+
+    # Get all gitignored files
+    local all_ignored
+    all_ignored=$(git -C "$project_path" ls-files --exclude-standard --ignored --others 2>/dev/null)
+
+    if [ -z "$all_ignored" ]; then
+        return 1  # No gitignored files at all
+    fi
+
+    # Disallowlist: exclude regenerable directories
+    local disallowed_patterns=(
+        "node_modules/"
+        "venv/"
+        ".venv/"
+        "__pycache__/"
+        ".pytest_cache/"
+        "dist/"
+        "build/"
+        "target/"
+        ".next/"
+        ".nuxt/"
+        "coverage/"
+        ".coverage/"
+        ".cache/"
+        ".parcel-cache/"
+        ".turbo/"
+        ".vercel/"
+        "bower_components/"
+        "vendor/bundle/"
+    )
+
+    # Filter out disallowed files
+    local filtered_files="$all_ignored"
+    for pattern in "${disallowed_patterns[@]}"; do
+        filtered_files=$(echo "$filtered_files" | grep -v "^${pattern}" || true)
+    done
+
+    # Check if we have any files left after filtering
+    if [ -n "$filtered_files" ]; then
+        return 0  # Has non-regenerable files
+    else
+        return 1  # Only has regenerable files
+    fi
+}
+
+create_bundle() {
+    local project_path="$1"
+    local bundle_path="$2"
+
+    if [ "$VERBOSE" = true ]; then
+        info "Creating git bundle: $bundle_path"
+    fi
+
+    # Create bundle with all branches and tags
+    # Redirect stderr to /dev/null to suppress progress, keep stdout for errors
+    if [ "$VERBOSE" = true ]; then
+        git -C "$project_path" bundle create "$bundle_path" --all || return 1
+    else
+        git -C "$project_path" bundle create "$bundle_path" --all >/dev/null 2>&1 || return 1
+    fi
+
+    # Verify bundle
+    if [ "$VERBOSE" = true ]; then
+        info "Verifying bundle integrity..."
+    fi
+
+    # Run verify from within the git repository
+    if [ "$VERBOSE" = true ]; then
+        git -C "$project_path" bundle verify "$bundle_path" || return 1
+    else
+        git -C "$project_path" bundle verify "$bundle_path" >/dev/null 2>&1 || return 1
+    fi
+
+    return 0
+}
+
+create_extras_tarball() {
+    local project_path="$1"
+    local tarball_path="$2"
+    local project_name="$(basename "$project_path")"
+
+    if [ "$VERBOSE" = true ]; then
+        info "Creating extras tarball (excluding regenerable files)..."
+    fi
+
+    # Get all gitignored files
+    local all_ignored
+    all_ignored=$(git -C "$project_path" ls-files --exclude-standard --ignored --others 2>/dev/null)
+
+    if [ -z "$all_ignored" ]; then
+        return 1  # No files to archive
+    fi
+
+    # Disallowlist: exclude regenerable directories (must match has_non_git_files)
+    local disallowed_patterns=(
+        "node_modules/"
+        "venv/"
+        ".venv/"
+        "__pycache__/"
+        ".pytest_cache/"
+        "dist/"
+        "build/"
+        "target/"
+        ".next/"
+        ".nuxt/"
+        "coverage/"
+        ".coverage/"
+        ".cache/"
+        ".parcel-cache/"
+        ".turbo/"
+        ".vercel/"
+        "bower_components/"
+        "vendor/bundle/"
+    )
+
+    # Filter out disallowed files
+    local files_to_archive="$all_ignored"
+    for pattern in "${disallowed_patterns[@]}"; do
+        files_to_archive=$(echo "$files_to_archive" | grep -v "^${pattern}" || true)
+    done
+
+    # Check if we have any files left after filtering
+    if [ -z "$files_to_archive" ]; then
+        return 1  # No files to archive after filtering
+    fi
+
+    # Create tarball of filtered files
+    cd "$project_path" && \
+    echo "$files_to_archive" | tar -czf "$tarball_path" -T - 2>/dev/null || return 1
+
+    return 0
+}
+
+get_directory_size() {
+    local dir="$1"
+    # Get size in bytes, portable across macOS and Linux
+    du -sk "$dir" 2>/dev/null | awk '{print $1}'
+}
+
+archive_git_project() {
+    local relative_path="$1"
+    local project_path="$DEV_DIR/$relative_path"
+
+    # Parse project path
+    local parsed
+    parsed=$(parse_project_path "$relative_path")
+    local category="${parsed%|*}"
+    local project="${parsed#*|}"
+
+    # Generate bundle filename with date
+    local date_stamp
+    date_stamp=$(date '+%Y-%m-%d')
+    local bundle_filename="${project}-${date_stamp}.bundle"
+    local extras_filename="${project}-${date_stamp}-extras.tar.gz"
+    local temp_bundle_path="/tmp/$bundle_filename"
+    local temp_extras_path="/tmp/$extras_filename"
+    local nfs_category_path="$MOUNT_POINT/$category"
+    local nfs_bundle_path="$nfs_category_path/$bundle_filename"
+    local nfs_extras_path="$nfs_category_path/$extras_filename"
+
+    # Check git status
+    if ! check_git_status "$project_path"; then
+        if [ "$FORCE" != true ]; then
+            echo "  ⚠  Skipping $relative_path (uncommitted changes, use --force to archive anyway)"
+            SKIPPED_COUNT=$((SKIPPED_COUNT + 1))
+            return 1
+        else
+            if [ "$VERBOSE" = true ]; then
+                info "Archiving $relative_path despite uncommitted changes (--force)"
+            fi
+        fi
+    fi
+
+    # Check for non-git files
+    local has_extras=false
+    if has_non_git_files "$project_path"; then
+        has_extras=true
+    fi
+
+    # Dry-run output
+    if [ "$DRY_RUN" = true ]; then
+        echo ""
+        echo "Would archive: $relative_path"
+        echo "  Git bundle: $bundle_filename"
+        if [ "$has_extras" = true ]; then
+            echo "  Extras (gitignored files, excl. node_modules/venv/build): $extras_filename"
+        fi
+        echo "  Destination: $nfs_category_path/"
+        echo "  Action: Remove original directory"
+        return 0
+    fi
+
+    # Get directory size before archival
+    local dir_size
+    dir_size=$(get_directory_size "$project_path")
+
+    # Create NFS directory structure
+    if [ ! -d "$nfs_category_path" ]; then
+        mkdir -p "$nfs_category_path" || {
+            echo "  ✗  Failed to create NFS directory: $nfs_category_path"
+            FAILED_COUNT=$((FAILED_COUNT + 1))
+            return 1
+        }
+    fi
+
+    # Create bundle
+    if ! create_bundle "$project_path" "$temp_bundle_path"; then
+        echo "  ✗  Failed to create or verify bundle for: $relative_path"
+        rm -f "$temp_bundle_path"
+        FAILED_COUNT=$((FAILED_COUNT + 1))
+        return 1
+    fi
+
+    # Move bundle to NFS
+    if ! mv "$temp_bundle_path" "$nfs_bundle_path"; then
+        echo "  ✗  Failed to move bundle to NFS: $relative_path"
+        rm -f "$temp_bundle_path"
+        FAILED_COUNT=$((FAILED_COUNT + 1))
+        return 1
+    fi
+
+    # Verify bundle exists on NFS before removing original
+    if [ ! -f "$nfs_bundle_path" ]; then
+        echo "  ✗  Bundle not found on NFS after move: $relative_path"
+        FAILED_COUNT=$((FAILED_COUNT + 1))
+        return 1
+    fi
+
+    # Create and move extras tarball if there are non-git files
+    if [ "$has_extras" = true ]; then
+        if [ "$VERBOSE" = true ]; then
+            info "Archiving gitignored files (.env, etc.)..."
+        fi
+
+        if create_extras_tarball "$project_path" "$temp_extras_path"; then
+            if mv "$temp_extras_path" "$nfs_extras_path"; then
+                if [ "$VERBOSE" = true ]; then
+                    success "Extras archived: $extras_filename"
+                fi
+                EXTRAS_COUNT=$((EXTRAS_COUNT + 1))
+            else
+                echo "  ⚠  Warning: Failed to move extras tarball to NFS"
+                rm -f "$temp_extras_path"
+            fi
+        else
+            if [ "$VERBOSE" = true ]; then
+                info "No extras to archive (or creation failed)"
+            fi
+        fi
+    fi
+
+    # Remove original directory
+    if ! rm -rf "$project_path"; then
+        echo "  ✗  Failed to remove original directory: $relative_path"
+        FAILED_COUNT=$((FAILED_COUNT + 1))
+        return 1
+    fi
+
+    # Success
+    if [ "$has_extras" = true ]; then
+        success "Archived: $relative_path → $bundle_filename + extras"
+    else
+        success "Archived: $relative_path → $bundle_filename"
+    fi
+    ARCHIVED_COUNT=$((ARCHIVED_COUNT + 1))
+    TOTAL_SIZE=$((TOTAL_SIZE + dir_size))
+
+    return 0
+}
+
+archive_non_git_project() {
+    local relative_path="$1"
+    local project_path="$DEV_DIR/$relative_path"
+
+    # Parse project path
+    local parsed
+    parsed=$(parse_project_path "$relative_path")
+    local category="${parsed%|*}"
+    local project="${parsed#*|}"
+
+    # Generate tarball filename with date
+    local date_stamp
+    date_stamp=$(date '+%Y-%m-%d')
+    local tarball_filename="${project}-${date_stamp}.tar.gz"
+    local temp_tarball_path="/tmp/$tarball_filename"
+    local nfs_category_path="$MOUNT_POINT/$category"
+    local nfs_tarball_path="$nfs_category_path/$tarball_filename"
+
+    # Dry-run output
+    if [ "$DRY_RUN" = true ]; then
+        echo ""
+        echo "Would archive: $relative_path (non-git)"
+        echo "  Full tarball: $tarball_filename"
+        echo "  Destination: $nfs_category_path/"
+        echo "  Action: Remove original directory"
+        return 0
+    fi
+
+    # Get directory size before archival
+    local dir_size
+    dir_size=$(get_directory_size "$project_path")
+
+    # Create NFS directory structure
+    if [ ! -d "$nfs_category_path" ]; then
+        mkdir -p "$nfs_category_path" || {
+            echo "  ✗  Failed to create NFS directory: $nfs_category_path"
+            FAILED_COUNT=$((FAILED_COUNT + 1))
+            return 1
+        }
+    fi
+
+    if [ "$VERBOSE" = true ]; then
+        info "Creating full tarball: $tarball_filename"
+    fi
+
+    # Create tarball of entire project
+    if ! tar -czf "$temp_tarball_path" -C "$(dirname "$project_path")" "$(basename "$project_path")" 2>/dev/null; then
+        echo "  ✗  Failed to create tarball for: $relative_path"
+        rm -f "$temp_tarball_path"
+        FAILED_COUNT=$((FAILED_COUNT + 1))
+        return 1
+    fi
+
+    # Move tarball to NFS
+    if ! mv "$temp_tarball_path" "$nfs_tarball_path"; then
+        echo "  ✗  Failed to move tarball to NFS: $relative_path"
+        rm -f "$temp_tarball_path"
+        FAILED_COUNT=$((FAILED_COUNT + 1))
+        return 1
+    fi
+
+    # Verify tarball exists on NFS before removing original
+    if [ ! -f "$nfs_tarball_path" ]; then
+        echo "  ✗  Tarball not found on NFS after move: $relative_path"
+        FAILED_COUNT=$((FAILED_COUNT + 1))
+        return 1
+    fi
+
+    # Remove original directory
+    if ! rm -rf "$project_path"; then
+        echo "  ✗  Failed to remove original directory: $relative_path"
+        FAILED_COUNT=$((FAILED_COUNT + 1))
+        return 1
+    fi
+
+    # Success
+    success "Archived (non-git): $relative_path → $tarball_filename"
+    NON_GIT_ARCHIVED_COUNT=$((NON_GIT_ARCHIVED_COUNT + 1))
+    TOTAL_SIZE=$((TOTAL_SIZE + dir_size))
+
+    return 0
+}
+
+archive_project() {
+    local entry="$1"
+    local prefix="${entry%% *}"
+    local relative_path="${entry#* }"  # Strip prefix
+
+    case "$prefix" in
+        "[git]")
+            archive_git_project "$relative_path"
+            ;;
+        "[no-git]")
+            archive_non_git_project "$relative_path"
+            ;;
+        *)
+            # Fallback for entries without prefix (backward compatibility)
+            archive_git_project "$entry"
+            ;;
+    esac
+}
+
+show_summary() {
+    echo ""
+    echo "=== Archive Summary ==="
+    echo "✓ Successfully archived: $((ARCHIVED_COUNT + NON_GIT_ARCHIVED_COUNT)) projects"
+
+    if [ $SKIPPED_COUNT -gt 0 ]; then
+        echo "⚠ Skipped (dirty status): $SKIPPED_COUNT projects"
+    fi
+
+    if [ $FAILED_COUNT -gt 0 ]; then
+        echo "✗ Failed: $FAILED_COUNT projects"
+    fi
+
+    echo ""
+    if [ $ARCHIVED_COUNT -gt 0 ]; then
+        echo "Git bundles created: $ARCHIVED_COUNT"
+    fi
+    if [ $NON_GIT_ARCHIVED_COUNT -gt 0 ]; then
+        echo "Non-git tarballs created: $NON_GIT_ARCHIVED_COUNT"
+    fi
+    if [ $EXTRAS_COUNT -gt 0 ]; then
+        echo "Extras tarballs created: $EXTRAS_COUNT (gitignored files, excluding regenerables)"
+    fi
+
+    if [ $TOTAL_SIZE -gt 0 ]; then
+        # Convert KB to human readable (using bash arithmetic to avoid bc dependency)
+        if [ $TOTAL_SIZE -gt 1048576 ]; then
+            # GB
+            local gb=$((TOTAL_SIZE / 1048576))
+            local gb_decimal=$(((TOTAL_SIZE * 10 / 1048576) % 10))
+            echo "Total space freed: ${gb}.${gb_decimal} GB"
+        elif [ $TOTAL_SIZE -gt 1024 ]; then
+            # MB
+            local mb=$((TOTAL_SIZE / 1024))
+            local mb_decimal=$(((TOTAL_SIZE * 10 / 1024) % 10))
+            echo "Total space freed: ${mb}.${mb_decimal} MB"
+        else
+            # KB
+            echo "Total space freed: $TOTAL_SIZE KB"
+        fi
+    fi
+
+    echo "NFS destination: $MOUNT_POINT"
+}
+
+main() {
+    # Parse command-line arguments
+    while test $# -gt 0; do
+        case "$1" in
+        "-h"|"--help")
+            help
+            ;;
+        "--dry-run")
+            DRY_RUN=true
+            ;;
+        "--force")
+            FORCE=true
+            ;;
+        "-v"|"--verbose")
+            VERBOSE=true
+            ;;
+        "-m"|"--mount-point")
+            MOUNT_POINT="${2}"
+            shift
+            ;;
+        *)
+            echo "Invalid option: $1"
+            help
+            ;;
+        esac
+        shift
+    done
+
+    # Pre-flight checks
+    check_dependencies
+
+    # Only mount NFS if not in dry-run mode
+    if [ "$DRY_RUN" != true ]; then
+        ensure_nfs_mounted
+    else
+        # In dry-run, just check if directory exists or create it
+        if [ ! -d "$MOUNT_POINT" ]; then
+            info "Dry-run mode: NFS mount point would be created at $MOUNT_POINT"
+        else
+            info "Dry-run mode: Using $MOUNT_POINT"
+        fi
+    fi
+
+    # Find all projects (git and non-git) (bash 3.2 compatible - no mapfile)
+    projects=()
+    while IFS= read -r line; do
+        projects+=("$line")
+    done < <(find_all_projects)
+
+    if [ ${#projects[@]} -eq 0 ]; then
+        info "No projects found in $DEV_DIR"
+        exit 0
+    fi
+
+    if [ "$VERBOSE" = true ]; then
+        info "Found ${#projects[@]} projects (git and non-git)"
+    fi
+
+    # Interactive selection with fzf
+    local selected
+    # Temporarily disable exit on error for fzf (returns 130 on Ctrl-C)
+    set +e
+    selected=$(printf '%s\n' "${projects[@]}" | fzf \
+        --multi \
+        --prompt="Select projects to archive (TAB for multi-select, Ctrl-A for all): " \
+        --preview="path=\$(echo {} | sed 's/^\[[^]]*\] //'); \
+                   if [[ {} == '[git]'* ]]; then \
+                       echo '=== Git Project ==='; \
+                       echo ''; \
+                       echo '=== Git Log ==='; \
+                       git -C $DEV_DIR/\$path log --oneline -10 2>/dev/null || echo 'No commits'; \
+                       echo ''; \
+                       echo '=== Git Status ==='; \
+                       git -C $DEV_DIR/\$path status 2>/dev/null || echo 'Cannot read status'; \
+                   else \
+                       echo '=== Non-Git Project ==='; \
+                       echo ''; \
+                       echo '=== Directory Contents ==='; \
+                       ls -la $DEV_DIR/\$path 2>/dev/null | head -20 || echo 'Cannot list directory'; \
+                   fi; \
+                   echo ''; \
+                   echo '=== Directory Size ==='; \
+                   du -sh $DEV_DIR/\$path 2>/dev/null || echo 'Cannot calculate size'" \
+        --preview-window=right:60% \
+        --bind='ctrl-a:select-all' \
+        --height=90%)
+    local fzf_exit=$?
+    set -e
+
+    # Check if user cancelled (Ctrl-C or ESC)
+    if [ $fzf_exit -ne 0 ] || [ -z "$selected" ]; then
+        info "No projects selected. Exiting."
+        exit 0
+    fi
+
+    # Process selected projects
+    echo ""
+    if [ "$DRY_RUN" = true ]; then
+        info "DRY RUN - No changes will be made"
+    fi
+
+    # Process selected projects (use process substitution to avoid subshell)
+    # Don't exit on individual project failures/skips - continue processing
+    while IFS= read -r project; do
+        archive_project "$project" || true
+    done < <(echo "$selected")
+
+    # Show summary
+    if [ "$DRY_RUN" != true ]; then
+        show_summary
+    fi
+}
+
+# Run main function
+main "$@"
