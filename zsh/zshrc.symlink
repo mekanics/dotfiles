@@ -50,11 +50,16 @@ HIST_STAMPS="dd.mm.yyyy"
 
 # TMUX
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-	ZSH_TMUX_AUTOSTART=false 
+  ZSH_TMUX_AUTOSTART=false
+elif [ "$TERM_PROGRAM" = "vscode" ]; then
+  ZSH_TMUX_AUTOSTART=false
 else
-	ZSH_TMUX_AUTOSTART=true
-	# ZSH_TMUX_ITERM2=true
+  ZSH_TMUX_AUTOSTART=true
 fi
+
+#ZSH_TMUX_AUTOSTART=true
+#ZSH_TMUX_AUTOSTART_ONCE=true
+#ZSH_TMUX_AUTOCONNECT=true
 
 ######################################################################
 
