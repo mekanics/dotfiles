@@ -13,10 +13,12 @@ brew "gitleaks"
 
 brew 'wget'
 brew 'ack'
+brew 'ripgrep'
 brew 'bat'
 brew 'prettyping'
 brew 'gallery-dl'
 brew 'rsync'
+brew 'direnv'
 
 brew 'gcovr'
 brew 'htop'
@@ -45,6 +47,11 @@ brew 'youtube-dl'
 cask 'iterm2'
 cask "alacritty"
 brew 'awscli'
+brew 'make'
+
+# ansible
+brew 'ansible'
+brew 'ansible-lint'
 
 # gpg
 cask 'gpg-suite'
