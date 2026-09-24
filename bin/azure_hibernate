@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# Function to start a service
+start_service() {
+    case $1 in
+    Microsoft.DBforMariaDB/servers)
+        # Starting MariaDB Server
+        az mariadb server start --name $resource_name --resource-group $resource_group_name
+        ;;
+    Microsoft.DBforMySQL/flexibleServers)
+        # Starting MySQL Flexible Server
+        az mysql flexible-server start --name $resource_name --resource-group $resource_group_name
+        ;;
+    Microsoft.ContainerService/managedClusters)
+        # Starting Kubernetes Service (AKS)
+        az aks start --name $resource_name --resource-group $resource_group_name
+        ;;
+    *)
+        echo "Starting $resource_type is not implemented."
+        ;;
+    esac
+}
+
+# Function to stop a service
+stop_service() {
+    case $1 in
+    Microsoft.DBforMariaDB/servers)
+        # Stopping MariaDB Server
+        az mariadb server stop --name $resource_name --resource-group $resource_group_name
+        ;;
+    Microsoft.DBforMySQL/flexibleServers)
+        # Stopping MySQL Flexible Server
+        az mysql flexible-server stop --name $resource_name --resource-group $resource_group_name
+        ;;
+    Microsoft.ContainerService/managedClusters)
+        # Stopping Kubernetes Service (AKS)
+        az aks stop --name $resource_name --resource-group $resource_group_name
+        ;;
+    *)
+        echo "Stopping $resource_type is not implemented."
+        ;;
+    esac
+}
+
+# Check if resource group name and action (start/stop) are provided as arguments
+if [ $# -lt 2 ]; then
+    echo "Usage: $0 <resource_group_name> <start|stop>"
+    exit 1
+fi
+
+# Get resource group name and action from arguments
+resource_group_name=$1
+action=$2
+
+# Get a list of resources in the resource group
+resources=$(az resource list --resource-group $resource_group_name --query "[?type!='Microsoft.ContainerService/managedClusters/nodePools' && type!='Microsoft.ContainerService/managedClusters/addonProfiles'] | [].{name:name, type:type}" --output tsv)
+
+# Perform action on each resource
+while IFS= read -r line; do
+    resource_name=$(echo $line | awk '{print $1}')
+    resource_type=$(echo $line | awk '{print $2}')
+
+    echo "$action $resource_type $resource_name..."
+
+    case $action in
+    start)
+        start_service $resource_type
+        ;;
+    stop)
+        stop_service $resource_type
+        ;;
+    *)
+        echo "Unknown action: $action. Supported actions: start, stop."
+        ;;
+    esac
+done <<<"$resources"
+
+echo "$action complete for Resource Group $resource_group_name."
