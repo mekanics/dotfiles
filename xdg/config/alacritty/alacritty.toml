@@ -10,3 +10,12 @@ live_config_reload = true
 import = [
     "~/.config/alacritty/themes/dracula.toml"
     ]
+
+[window]
+
+padding = { x = 16, y = 0 }
+decorations = "Transparent"
+# blur = true
+# opacity = 0.6
+
+startup_mode = "Fullscreen"
