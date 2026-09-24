@@ -13,3 +13,13 @@ alias fixiCloud="killall bird"
 
 ## Get my WAN IP
 alias wanip="dig @resolver4.opendns.com myip.opendns.com +short"
+
+## Edit mz Finances
+alias finance="code ~/Finance"
+alias dotfiles="cursor ~/.dotfiles"
+
+alias jsontidy="pbpaste | jq '.' | pbcopy"
+
+## Convenience
+alias dev="cd ~/Development"
+alias spuhl="cursor ~/Development/j2y/originate/SpuehlSoftware/recipe-management-webapp.code-workspace"
