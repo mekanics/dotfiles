@@ -1,53 +1,83 @@
 [user]
-	useConfigOnly = true
-	email = alexandre.joly@mekanics.ch
-	name = Alexandre Joly
-[user "work"]
-	name = Alexandre Joly
-	email = alexandre@j2y.dev
-	signingkey = 54F09A63
+    useConfigOnly = true
+    name = Alexandre Joly
+    email = alexandre@j2y.dev
+    signingkey = C32F1212
+
 [user "private"]
-	name = Alexandre Joly
-	email = alexandre.joly@mekanics.ch
-	signingkey = 3E455AC8BE4EBB23
+    name = Alexandre Joly
+    email = alexandre.joly@mekanics.ch
+    signingkey = 3E455AC8BE4EBB23
+
+[includeIf "gitdir:*/yourasset/"]
+    path = ~/.gitconfig.yourasset
+
+[includeIf "gitdir:*/dreipol/"]
+    path = ~/.gitconfig.dreipol
+
+[includeIf "gitdir:*/j2y/"]
+    path = ~/.gitconfig.j2y
+
 [mergetool]
-	keepBackup = true
+    keepBackup = true
+
 [core]
-	editor = code --wait --new-window
-	excludesfile = ~/.gitignore_global
-	autocrlf = input
+    editor = code --wait --new-window
+    excludesfile = ~/.gitignore_global
+    autocrlf = input
 [color]
-	ui = true
+    ui = true
+
 [push]
-	default = matching
-	followTags = true
+    default = matching
+    followTags = true
+	autoSetupRemote = true
+
 [alias]
-	st = status -sb
-	identity = "! git config user.name \"$(git config user.$1.name)\"; git config user.email \"$(git config user.$1.email)\"; git config user.signingkey \"$(git config user.$1.signingkey)\"; :"
-	mwps = push -u origin -o merge_request.create -o merge_request.target=main -o merge_request.merge_when_pipeline_succeeds
+    st = status -sb
+    identity = "! git config user.name \"$(git config user.$1.name)\"; git config user.email \"$(git config user.$1.email)\"; git config user.signingkey \"$(git config user.$1.signingkey)\"; :"
+    mwps = push -u origin -o merge_request.create -o merge_request.target=main -o merge_request.merge_when_pipeline_succeeds
+    undo = reset --soft HEAD^
+    hash = "rev-list --max-count=1 --abbrev-commit --skip=# HEAD"
+    wtab = "!f() { git worktree add ".worktrees/$1" -b "$1"; }; f"
+    wta  = "!f() { git worktree add ".worktrees/$1" "$1"; }; f" 
+    wtr  = "!f() { git worktree remove ".worktrees/$1"; }; f" 
+    wtl  = "!f() { git worktree list; }; f"
+
 [pull]
-	rebase = true
+    rebase = true
+
 [credential]
-	helper = osxkeychain
+    helper = osxkeychain
+
 [commit]
 	gpgsign = true
-	template = ~/.gitmessage
+    template = ~/.gitmessage
+
 [gpg]
+	program = /opt/homebrew/bin/gpg
+
 [status]
-	showUntrackedFiles = all
+    showUntrackedFiles = all
+
 [gitflow "branch"]
-	master = production
-	develop = master
+    master = production
+    develop = master
+
 [gitflow "prefix"]
-	versiontag = v
+    versiontag = v
+
 [filter "lfs"]
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+    clean = git-lfs clean -- %f
+
 [url "git@git.kilokilo.ch:"]
-	insteadOf = https://git.kilokilo.ch/
+    insteadOf = https://git.kilokilo.ch/
+
 [init]
-	defaultBranch = main
+    defaultBranch = main
+
 [merge]
-	ff = no
+    ff = no
