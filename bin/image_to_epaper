@@ -82,7 +82,7 @@ find -E "$FOLDER" -type f -maxdepth 1 -iregex '.*\.(jpeg|jpg|png|gif|bmp)$' -pri
 
     if [ "$BLURED_BG" = true ]; then
 
-        convert "$img_path" \
+        magick "$img_path" \
             $MONOCHROM_CMD \
             \( -clone 0 -resize "800x480>" -background $BG_COLOR $EXTENT_CMD -blur 0x100 \) \
             \( -clone 0 -resize "800x480>" \) \
@@ -93,7 +93,7 @@ find -E "$FOLDER" -type f -maxdepth 1 -iregex '.*\.(jpeg|jpg|png|gif|bmp)$' -pri
 
     else
 
-        convert "$img_path" \
+        magick "$img_path" \
             -resize "800x480>" \
             -gravity center \
             -background $BG_COLOR \
