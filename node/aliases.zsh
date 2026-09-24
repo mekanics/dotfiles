@@ -16,3 +16,6 @@ yalc_publish_push() {
 
 # Shorthand version of "yalc_publish_push", use "ypp" instead.
 alias ypp=yalc_publish_push
+
+# Replace npm with pnpm
+alias npm="pnpm"
