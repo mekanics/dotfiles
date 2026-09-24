@@ -1,0 +1,70 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "timezone": "Europe/Zurich",
+  "schedule": [
+    "every weekend"
+  ],
+  "packageRules": [
+    {
+      "description": "Group all non-major devDependencies into one PR",
+      "matchDepTypes": [
+        "devDependencies"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "devDependencies (non-major)",
+      "automerge": true
+    },
+    {
+      "description": "Group all patch updates into one PR",
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "groupName": "patch updates",
+      "automerge": true
+    },
+    {
+      "description": "Group minor updates into one PR (no automerge — needs a glance)",
+      "matchUpdateTypes": [
+        "minor"
+      ],
+      "groupName": "minor updates",
+      "automerge": false
+    },
+    {
+      "description": "Major updates: one PR each, no automerge",
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": false
+    },
+    {
+      "description": "Pin Docker digests",
+      "matchManagers": [
+        "dockerfile",
+        "docker-compose"
+      ],
+      "pinDigests": true
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "labels": [
+      "security"
+    ],
+    "automerge": true,
+    "schedule": [
+      "at any time"
+    ]
+  },
+  "labels": [
+    "dependencies"
+  ],
+  "prCreation": "not-pending",
+  "rebaseWhen": "behind-base-branch",
+  "dependencyDashboard": true
+}

@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+# gh-repo-init — Create a GitHub repo and apply default settings
+# Usage:
+#   gh-repo-init <owner/repo>              # apply defaults to existing repo
+#   gh-repo-init <owner/repo> --create     # create repo then apply defaults
+#   gh-repo-init <owner/repo> --create --private
+#   gh-repo-init <owner/repo> --create --public
+#
+# Requires: gh CLI, authenticated
+
+set -euo pipefail
+
+REPO="${1:-}"
+CREATE=false
+VISIBILITY="--private"  # default: private
+DEPENDABOT=false
+
+if [[ -z "$REPO" ]]; then
+  echo "Usage: $0 <owner/repo> [--create] [--private|--public] [--dependabot]"
+  exit 1
+fi
+
+shift
+for arg in "$@"; do
+  case "$arg" in
+    --create)     CREATE=true ;;
+    --public)     VISIBILITY="--public" ;;
+    --private)    VISIBILITY="--private" ;;
+    --dependabot) DEPENDABOT=true ;;
+  esac
+done
+
+# --- Create repo (optional) ---
+if [[ "$CREATE" == true ]]; then
+  echo "🆕 Creating $REPO ($VISIBILITY)..."
+  gh repo create "$REPO" "$VISIBILITY" --confirm 2>/dev/null || \
+  gh repo create "$REPO" "$VISIBILITY"
+  echo "  ✅ Repo created"
+  sleep 1  # give GitHub a moment
+fi
+
+echo "🔧 Configuring $REPO..."
+
+# --- Repo settings ---
+gh api "repos/$REPO" \
+  --method PATCH \
+  --silent \
+  -f has_wiki=false \
+  -f has_projects=false \
+  -F delete_branch_on_merge=true \
+  -F allow_merge_commit=false \
+  -F allow_squash_merge=true \
+  -F allow_rebase_merge=true \
+  -F squash_merge_commit_title="PR_TITLE" \
+  -F squash_merge_commit_message="PR_BODY"
+
+echo "  ✅ Squash (default) + rebase merges, delete branch on merge, wiki/projects off"
+
+# --- Branch ruleset on default branch ---
+gh api "repos/$REPO/rulesets" \
+  --method POST \
+  --silent \
+  --input - <<'EOF'
+{
+  "name": "Protect default branch",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "include": ["~DEFAULT_BRANCH"],
+      "exclude": []
+    }
+  },
+  "rules": [
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 0,
+        "dismiss_stale_reviews_on_push": false,
+        "require_code_owner_review": false,
+        "require_last_push_approval": false,
+        "required_review_thread_resolution": false,
+        "allowed_merge_methods": ["squash", "rebase"]
+      }
+    },
+    { "type": "required_linear_history" },
+    { "type": "deletion" },
+    { "type": "non_fast_forward" }
+  ]
+}
+EOF
+echo "  ✅ Branch ruleset: PR required, no force pushes, linear history, squash/rebase only"
+
+# --- Security features ---
+gh api "repos/$REPO/vulnerability-alerts" --method PUT --silent 2>/dev/null && \
+  echo "  ✅ Vulnerability alerts on" || \
+  echo "  ⚠️  Vulnerability alerts: skipped (may require org permission)"
+
+# --- Dependabot (opt-in) ---
+if [[ "$DEPENDABOT" == true ]]; then
+  gh api "repos/$REPO/automated-security-fixes" --method PUT --silent 2>/dev/null && \
+    echo "  ✅ Dependabot security fixes on" || \
+    echo "  ⚠️  Dependabot: skipped (may require org permission)"
+fi
+
+echo ""
+echo "✅ Done. $REPO is ready."
+echo "   https://github.com/$REPO"
+if [[ "$DEPENDABOT" == false ]]; then
+  echo ""
+  echo "📦 Dependency updates: drop a renovate.json in the repo root"
+  echo "   cp ~/dotfiles/renovatebot/renovate.json <repo>/"
+  echo "   (Renovate app: https://github.com/apps/renovate)"
+fi
