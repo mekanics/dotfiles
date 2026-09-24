@@ -86,7 +86,7 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 # Add the known ssh keys
-ssh-add -A 2>/dev/null
+ssh-add --apple-load-keychain 2>/dev/null
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -109,7 +109,7 @@ fi
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 if [ -z "$SSH_AUTH_SOCK" ]; then
 	eval $(ssh-agent -s)
-	ssh-add
+	# ssh-add
 fi
 
 # autosuggestion
