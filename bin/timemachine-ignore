@@ -1,0 +1,67 @@
+#!/bin/bash
+###
+### timemachine-ignore — adds timemachine exclusions to the current directory
+###
+### Usage:
+###   timemachine-ignore [verb]
+###
+### Verbs:
+###   -a, --add     Add an exclusion (default action)
+###   -l, --list    List the exclusions
+###   -h, --help    Show this help message and exit"
+
+EXCLUDED_DIRECTORIES=( "env" "node_modules" "venv" ".sst" ".yarn" )
+WORK_DIR=$(pwd)
+
+help() {
+    awk -F'### ' '/^###/ { print $2 }' "$0"
+    exit
+}
+
+add_exclusion() {
+
+    # Build the find name conditions dynamically
+    NAME_CONDITIONS=""
+    for i in "${!EXCLUDED_DIRECTORIES[@]}"; do
+        if [ $i -eq 0 ]; then
+            NAME_CONDITIONS="-name '${EXCLUDED_DIRECTORIES[$i]}'"
+        else
+            NAME_CONDITIONS="${NAME_CONDITIONS} -o -name '${EXCLUDED_DIRECTORIES[$i]}'"
+        fi
+    done
+
+    # Execute find with all conditions in a single pass
+    eval "find ${WORK_DIR} -maxdepth 6 -type d \( ${NAME_CONDITIONS} \) -prune -exec tmutil addexclusion {} \; -exec tmutil isexcluded {} \;"
+}
+
+list_exclusions() {
+
+    # Build the find name conditions dynamically
+    NAME_CONDITIONS=""
+    for i in "${!EXCLUDED_DIRECTORIES[@]}"; do
+        if [ $i -eq 0 ]; then
+            NAME_CONDITIONS="-name '${EXCLUDED_DIRECTORIES[$i]}'"
+        else
+            NAME_CONDITIONS="${NAME_CONDITIONS} -o -name '${EXCLUDED_DIRECTORIES[$i]}'"
+        fi
+    done
+
+    eval "find ${WORK_DIR} -maxdepth 6 -xattrname "com.apple.metadata:com_apple_backup_excludeItem" \( ${NAME_CONDITIONS} \) -type d -prune"
+}
+
+# Parse command line arguments
+case "${1:-}" in
+    -l|--list)
+        list_exclusions
+        ;;
+    -a|--add|"")
+        add_exclusion
+        ;;
+    -h|--help)
+        help
+        ;;
+    *)
+        echo "Error: Unknown option '$1'"
+        help
+        ;;
+esac
