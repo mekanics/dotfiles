@@ -2,7 +2,7 @@
     useConfigOnly = true
     name = Alexandre Joly
     email = alexandre@j2y.dev
-    signingkey = C32F1212
+    signingkey = 938AA2D43A8FFB95101D61DC9F180A4DC32F1212
 
 [commit]
     gpgsign = true
