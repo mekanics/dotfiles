@@ -2,12 +2,12 @@
     useConfigOnly = true
     name = Alexandre Joly
     email = alexandre@j2y.dev
-    signingkey = C32F1212
+    signingkey = 938AA2D43A8FFB95101D61DC9F180A4DC32F1212
 
 [user "private"]
     name = Alexandre Joly
     email = alexandre.joly@mekanics.ch
-    signingkey = 3E455AC8BE4EBB23
+    signingkey = 7BD83C009F2E4B36158485C43E455AC8BE4EBB23
 
 [includeIf "gitdir:*/yourasset/"]
     path = ~/.gitconfig.yourasset

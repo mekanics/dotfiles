@@ -1,7 +1,7 @@
 [user]
     name = Alexandre Joly
     email = alexandre.joly@yourasset.com
-    signingkey = 396FE2BD98FD81D9
+    signingkey = 56C69E62BD70C07945DF905C396FE2BD98FD81D9
 
 [commit]
     gpgsign = true

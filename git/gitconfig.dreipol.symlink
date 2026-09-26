@@ -1,7 +1,7 @@
 [user]
     name = Alexandre Joly
     email = alexandre.joly@dreipol.ch
-    signingkey = 57CBCBE2223C889C
+    signingkey = E8B91369F231C8F41F47C65D57CBCBE2223C889C
 
 [commit]
     gpgsign = true
