@@ -22,4 +22,5 @@ alias jsontidy="pbpaste | jq '.' | pbcopy"
 
 ## Convenience
 alias dev="cd ~/Development"
+alias homelab="cursor ~/Development/private/homelab/homelab.code-workspace"
 alias spuhl="cursor ~/Development/j2y/originate/SpuehlSoftware/recipe-management-webapp.code-workspace"
