@@ -3,5 +3,8 @@ require "alacritty"
 
 local homeNetwork = require "network"
 homeNetwork.setEthernetInterface("USB 10/100/1000 LAN")
+
+local airpods = require "airpods"
+airpods.start()
 systemWatcher = hs.caffeinate.watcher.new(homeNetwork.handleWifi)
 systemWatcher:start()

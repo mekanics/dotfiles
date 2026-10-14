@@ -26,3 +26,5 @@ else
 fi
 
 open -a Hammerspoon
+
+echo "AirPods toggle: allow Hammerspoon under System Settings › Privacy & Security › Bluetooth."
