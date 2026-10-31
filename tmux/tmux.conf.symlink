@@ -15,8 +15,8 @@ set -g @plugin 'tmux-plugins/tmux-sensible'     # basic tmux settings everyone c
 set -g @plugin 'tmux-plugins/tmux-pain-control' # standard pane key-bindings for tmux
 # set -g @plugin 'tmux-plugins/tmux-battery' # Plug and play battery percentage and icon indicator for Tmux.
 set -g @plugin 'tmux-plugins/tmux-resurrect' # Persists tmux environment across system restarts.
-set -g @plugin 'tmux-plugins/tmux-continuum' # Continuous saving of tmux environment
 set -g @plugin 'dracula/tmux'
+set -g @plugin 'tmux-plugins/tmux-continuum' # Must stay last: it saves via a hook in status-right, which earlier plugins overwrite
 
 # Other examples:
 # set -g @plugin 'github_username/plugin_name'
@@ -47,7 +47,6 @@ bind-key -n C-S-Right swap-window -t +1 \; next-window
 set -g @continuum-boot 'on'
 set -g @continuum-restore 'on'
 set -g @continuum-save-interval '15'
-set -g status-right 'Continuum status: #{continuum_status}'
 set -g @continuum-boot-options 'alacritty,fullscreen'
 
 
