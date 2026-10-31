@@ -1,6 +1,3 @@
-# Default session name
-new-session -s main
-
 # Mouse Support
 set -g mouse on
 
