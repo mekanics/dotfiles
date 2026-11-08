@@ -1,1 +1,1 @@
-export PATH="$PATH:~/.astack/bin"
+export PATH="$PATH:$HOME/.astack/bin"
