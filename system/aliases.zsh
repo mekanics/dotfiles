@@ -4,8 +4,9 @@ alias pubkey="more ~/.ssh/id_rsa.pub | pbcopy | echo '=> Public key copied to pa
 ### FIX El Capitan rights
 alias fixElCapitan="sudo chown -R $(whoami):admin /usr/local"
 
-alias cat='bat'
-alias ping='prettyping --nolegend'
+# only shadow core commands when the replacement is installed
+(( $+commands[bat] )) && alias cat='bat'
+(( $+commands[prettyping] )) && alias ping='prettyping --nolegend'
 alias rsyncp="rsync -az --info=progress2"
 
 ## FIX iCloud Sync
