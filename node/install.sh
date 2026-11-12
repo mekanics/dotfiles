@@ -8,13 +8,6 @@ git clone https://github.com/jasongin/nvs "$NVS_HOME"
 nvs add lts
 nvs link lts
 
-## YARN
-brew install yarn
-brew uninstall node --ignore-dependencies
-
-## Link NODE
-mkdir $HOMEBREW_CELLAR/node
-ln -s $NVS_HOME/default/ $HOMEBREW_CELLAR/node
-
-brew link --overwrite node
-brew pin node
+## Package managers: pnpm is primary; yarn only per-project via Corepack
+pnpm add -g corepack
+corepack enable --install-directory "${PNPM_HOME:-$HOME/Library/pnpm}/bin" yarn
