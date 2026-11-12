@@ -99,6 +99,12 @@ check "Homebrew bin precedes /usr/bin" "" \
   test ${entries[(Ie)/opt/homebrew/bin]} -gt 0 -a \
   ${entries[(Ie)/opt/homebrew/bin]} -lt ${entries[(Ie)/usr/bin]}
 
+if [[ -d $HOME/.cargo/bin ]]; then
+  check "rustup's cargo bin precedes Homebrew and the system" "" \
+    test ${entries[(Ie)$HOME/.cargo/bin]} -gt 0 -a \
+    ${entries[(Ie)$HOME/.cargo/bin]} -lt ${entries[(Ie)/opt/homebrew/bin]}
+fi
+
 if [[ -r $HOME/.orbstack/shell/init.zsh ]]; then
   check "OrbStack bin is on PATH" "" test ${entries[(Ie)$HOME/.orbstack/bin]} -gt 0
 fi
