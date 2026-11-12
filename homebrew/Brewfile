@@ -38,8 +38,6 @@ cask 'lulu'
 cask 'blockblock'
 cask 'whatsyoursign'
 
-# brew 'yarn', args: ['without-node']
-
 brew 'speedtest_cli'
 brew 'youtube-dl'
 

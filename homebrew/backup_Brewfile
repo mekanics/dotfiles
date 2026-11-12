@@ -190,8 +190,6 @@ brew "watchman"
 brew "wget"
 # Graphical network analyzer and capture tool
 brew "wireshark"
-# JavaScript package manager
-brew "yarn"
 # General-purpose lossless data-compression library
 brew "zlib"
 # Code Climate CLI
