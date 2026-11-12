@@ -1,12 +1,20 @@
+# PATH and fpath hold each directory once; the base PATH comes from .zprofile.
+typeset -U path fpath
+
+# shortcut to my dotfiles path is $DOT (resolved from this file's symlink;
+# ~/.dotfiles when ~/.zshrc has been replaced by a plain copy)
+export DOT=${${(%):-%x}:A:h:h}
+[[ -f $DOT/zsh/zshrc.symlink ]] || DOT=$HOME/.dotfiles
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-# ZSH_THEME="lukerandall"
-ZSH_THEME="alex"
+# Starship draws the prompt; fall back to an oh-my-zsh theme without it.
+if (( $+commands[starship] )); then
+  ZSH_THEME=""
+else
+  ZSH_THEME="alex"
+fi
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -53,6 +61,9 @@ if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
   ZSH_TMUX_AUTOSTART=false
 elif [ "$TERM_PROGRAM" = "vscode" ]; then
   ZSH_TMUX_AUTOSTART=false
+elif [ -n "$ZSH_EXECUTION_STRING" ] || [ ! -t 0 ] || [ ! -t 1 ]; then
+  # `zsh -ilc ...` or no TTY (GUI apps reading the login env): never attach tmux
+  ZSH_TMUX_AUTOSTART=false
 else
   ZSH_TMUX_AUTOSTART=true
 fi
@@ -74,22 +85,18 @@ unsetopt share_history
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(tmux git macos sudo colored-man-pages)
 plugins+=(npm node)
-plugins+=(brew pod swiftpm react-native bundler pip gem chruby)
+plugins+=(brew pod swiftpm react-native bundler pip gem)
 plugins+=(docker docker-compose)
 plugins+=(aws terraform)
 plugins+=(kubectl helm)
-plugins+=(zsh-syntax-highlighting zsh-autosuggestions)
 plugins+=(rust)
+plugins+=(zsh-autosuggestions)
+# must stay last: it wraps every zle widget defined before it
+plugins+=(zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
-# Add the known ssh keys
-ssh-add --apple-load-keychain 2>/dev/null
-
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
-# export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
@@ -99,18 +106,15 @@ export LC_ALL=en_US.UTF-8
 if [[ -n $SSH_CONNECTION ]]; then
 	export EDITOR='vim'
 else
-	export EDITOR='code --new-window'
+	export EDITOR='code --wait --new-window'
 fi
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
+# ssh: macOS launchd provides the agent; start one only if it is missing,
+# then add the keys stored in the keychain
 if [ -z "$SSH_AUTH_SOCK" ]; then
 	eval $(ssh-agent -s)
-	# ssh-add
 fi
+ssh-add --apple-load-keychain 2>/dev/null
 
 # autosuggestion
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
@@ -120,16 +124,8 @@ if [ -f ~/.zshrc_local ]; then
 	source ~/.zshrc_local
 fi
 
-# HOMWBREW
-################################################################################
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
-
 # DOTFILES
 ################################################################################
-
-# shortcut to my dotfiles path is $DOT
-export DOT=$HOME/.dotfiles
 
 # all of our zsh files
 typeset -U config_files
@@ -150,17 +146,22 @@ for config_file in ${(M)config_files:#*/config.zsh}; do
   source $config_file
 done
 
-################################################################################
-
-# Starship
-################################################################################
-eval "$(starship init zsh)"
-# pnpm
+# pnpm (keep the markers: `pnpm setup` looks for them before editing this file)
 export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME/bin:"*) ;;
   *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
+# the guard above skips an inherited entry that path_helper moved behind the
+# system dirs (tmux panes, editor terminals); put it back in front
+path=("$PNPM_HOME/bin" $path)
 
-test -e "$HOME/.shellfishrc" && source "$HOME/.shellfishrc"
+# drop PATH entries for directories that do not exist on this machine
+path=($^path(N-/))
+
+################################################################################
+
+# Starship
+################################################################################
+(( $+commands[starship] )) && eval "$(starship init zsh)"
