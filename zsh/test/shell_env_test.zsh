@@ -23,7 +23,10 @@ tmp=$(mktemp -d "${TMPDIR:-/tmp}/shell_env_test.XXXXXX") || {
 cleanup() {
   [[ -n ${tmp-} && -d $tmp && ${tmp:t} == shell_env_test.* ]] && rm -rf -- "$tmp"
 }
-trap cleanup EXIT INT TERM
+trap cleanup EXIT
+# a trapped signal does not stop zsh: exit, or the checks run on a deleted $tmp
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 check() { # check <name> <detail-on-failure> <command...>
   local name=$1 detail=$2
@@ -109,10 +112,42 @@ if [[ -r $HOME/.orbstack/shell/init.zsh ]]; then
   check "OrbStack bin is on PATH" "" test ${entries[(Ie)$HOME/.orbstack/bin]} -gt 0
 fi
 
+# A tmux pane or editor terminal is a login shell that inherits this PATH, and
+# path_helper reorders it before .zprofile runs: every prepend must win again.
+mkdir "$tmp/nested"
+with_timeout $shell_timeout env -i $shell_env PROBE_OUT="$tmp/nested" \
+  PATH="${got[PATH]}" /bin/zsh -ilc 'print -rn -- "$PATH" > "$PROBE_OUT/PATH"' \
+  </dev/null >/dev/null 2>&1
+nested=()
+[[ -f $tmp/nested/PATH ]] && nested=(${(s.:.)"$(<"$tmp/nested/PATH")"})
+diverged=''
+for (( i = 1; i <= ${#entries} || i <= ${#nested}; i++ )); do
+  if [[ ${entries[i]-} != ${nested[i]-} ]]; then
+    diverged="entry $i is '${nested[i]-}', a fresh shell has '${entries[i]-}'"
+    break
+  fi
+done
+check "a nested login shell (tmux pane) keeps the same PATH order" \
+  "$diverged" test -z "$diverged"
+
 # --- dotfiles, prompt, plugins, editor ---------------------------------------------
 
 check "DOT points at the checkout under test" "got '${got[DOT]}'" \
   test "${got[DOT]}" = "$repo"
+
+# `pnpm setup` and editors can replace the ~/.zshrc symlink with a plain copy;
+# DOT must then fall back to ~/.dotfiles instead of loading no topic files.
+if [[ -f $HOME/.dotfiles/zsh/zshrc.symlink ]]; then
+  mkdir "$tmp/copied" "$tmp/copied/out"
+  cp "$repo/zsh/zshrc.symlink" "$tmp/copied/.zshrc"
+  with_timeout $shell_timeout env -i $shell_env ZDOTDIR="$tmp/copied" \
+    PROBE_OUT="$tmp/copied/out" /bin/zsh -ic 'print -rn -- "$DOT" > "$PROBE_OUT/DOT"' \
+    </dev/null >/dev/null 2>&1
+  copied_dot=''
+  [[ -f $tmp/copied/out/DOT ]] && copied_dot=$(<"$tmp/copied/out/DOT")
+  check "DOT falls back to ~/.dotfiles when ~/.zshrc is a copy" "got '$copied_dot'" \
+    test "$copied_dot" = "$HOME/.dotfiles"
+fi
 
 check "no oh-my-zsh theme is loaded when starship is installed" \
   "ZSH_THEME='${got[ZSH_THEME]}'" test -z "${got[ZSH_THEME]}"
