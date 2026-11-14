@@ -60,6 +60,10 @@ HIST_STAMPS="dd.mm.yyyy"
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
   ZSH_TMUX_AUTOSTART=false
 elif [ "$TERM_PROGRAM" = "vscode" ]; then
+  # VS Code / Cursor integrated terminal
+  ZSH_TMUX_AUTOSTART=false
+elif [ "$__CFBundleIdentifier" = "com.t3tools.t3code" ]; then
+  # T3 Code integrated terminal (no TERM_PROGRAM; detect via the app bundle id)
   ZSH_TMUX_AUTOSTART=false
 elif [ -n "$ZSH_EXECUTION_STRING" ] || [ ! -t 0 ] || [ ! -t 1 ]; then
   # `zsh -ilc ...` or no TTY (GUI apps reading the login env): never attach tmux
